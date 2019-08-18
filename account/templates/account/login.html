@@ -1,0 +1,27 @@
+<html>
+<head>
+  <title>Registration</title>
+</head>
+<body>
+    <h2>Log In</h2>
+    <form method="post">
+       {% csrf_token %}
+       {% for field in login_form %}
+       <p>
+         {{ field.label_tag }}
+         {{ field }}
+         {% if field.help_text %}
+         <span style="color:grey">{{ help.text }}</span>
+         {% endif %}
+         {% for error in field.errors %}
+         <p style="color: red">{{ error }}</p>
+         {% endfor %}
+         {% if login_form.non_field_errors %}
+         {{ login_form.non_field_errors}}
+         {% endif %}
+     </p>
+     {% endfor %}
+     <button type="submit">Log in</button>
+ </form>
+</body>
+</html>

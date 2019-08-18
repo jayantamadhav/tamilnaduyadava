@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Home</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</head>
+<body> 
+
+	<div class="container" style="min-height: 100vh">
+		<div class="container">
+			<div class="navbar has-padding-30" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="{% url 'home' %}">
+						<h1 class="title is-size-1 is-size-3-mobile has-text-white">TamilnaduYadava</h1>
+					</a>
+					
+				</div>
+			</div>
+			<div class="columns is-variable has-padding-20">
+				<div class="column is-8">
+					<div class="container is-block has-text-centered has-padding-top-120 has-margin-bottom-60">
+						<p class="is-size-1 is-size-4-mobile has-text-white">Your Story Waiting to Happen..</p> 
+					</div>
+				</div>
+				<div class="column is-block" style="background-color: rgba(0, 0, 0, 0,5);">
+					<div class="card login-card  has-text-centered" style="box-shadow: 5px 5px  25px #000">
+						<div class="card-header">
+							<p class="is-size-3 card-header-title is-centered"><strong>Login</strong></p>
+						</div>
+						<div class="card-content has-padding-40">
+							{% if messages %}
+							{% for message in messages %}
+								<p class="has-text-danger">{{message}}<br><span class="has-text-dark">If you've forgotten your password, click 'Forgot password below'</span></p><br>
+							{% endfor %}
+							{% endif %}
+							<form method="post" >
+								{% csrf_token %}
+								<div class="control">
+									<input class="input" name="email" type="text" placeholder="Enter Email" autocomplete="off">
+								</div><br>
+								<div class="control">
+									<input class="input" name="password" type="password" placeholder="Enter Password" autocomplete="off">
+								</div><br>
+								<button class="button is-medium is-pulled-right is-primary">Submit</button><br>
+							</form>
+							<div class="has-text-left has-padding-10 has-margin-top-30">
+								<a href="{% url 'password_reset' %}">Forgot password</a><br>
+								<a href="{% url 'register' %}">Register Now</a><br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

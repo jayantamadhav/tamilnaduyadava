@@ -1,0 +1,336 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Your Profile</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+	<Style>
+	.popup-overlay {
+		visibility:hidden;
+	}
+
+	.popup-content {
+		visibility:hidden;
+	}
+	.popup-overlay.active{
+		visibility:visible;
+	}
+
+	.popup-content.active {
+		visibility:visible;
+	}
+	.edit:hover{
+		color: blue;
+		cursor: pointer;
+	}
+</Style>
+</head>
+<body style="background:none">
+	<!-- Header -->
+	<div class="header">
+		<section class="is-fullhd">
+			<nav class="navbar has-padding-left-20 has-padding-right-20" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="{% url 'home' %}">
+						<p class="is-size-3 is-size-4-mobile has-text-primary">TamilnaduYadava</p>
+					</a>
+
+					<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
+				</div>
+
+				<div id="navbarBasicExample" class="navbar-menu">
+					<div class="navbar-start">
+
+					</div>
+
+					<div class="navbar-end">
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								Help
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'about_us' %}">
+									About Us
+								</a>
+								<a class="navbar-item" href="{% url 'privacy_policy' %}">
+									Privacy Policy
+								</a>
+							</div>
+						</div>
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								<strong>Hi, {{request.user.name}}</strong>
+								<figure class="image is-32x32">
+									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+								</figure>
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'manage_profile' %}">
+									Manage Profile
+								</a>
+								<a class="navbar-item" href="{% url 'logout' %}">
+									Log out
+								</a>
+							</div>
+							
+						</div>	
+					</div>
+				</div>
+			</nav>
+		</section>
+	</div>
+
+	<!-- Content Container -->
+	<section class="container is-block has-background-white has-padding-20 has-margin-top-30">
+		<p class="is-size-3 is-size-4-mobile has-text-centered">Edit profile</p>
+		<div class="container has-padding-20">
+			<div class="columns">
+				<div class="column is-3 has-text-centered">
+					<form method="post" id="manage_pic" enctype="multipart/form-data">
+						{% csrf_token %}
+						<figure class="image is-256x256 is-inline-block" style="margin:auto;">
+							<img src="{{profile_image.file.url}}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
+						</figure>
+						<div class="file is-primary has-margin-top-20">
+							<label class="file-label">
+								<input class="file-input" id="profile-update" type="file" name="profile_image">
+								<span class="file-cta ">
+									<span class="file-icon">
+										<i class="fa fa-upload"></i>
+									</span>
+									<span class="file-label has-text-centered">
+										Change your profile picture
+									</span>
+								</span>
+							</label>
+						</div>
+					</form>
+					<form method="post" id="manage-horoscope" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="file has-margin-top-20">
+							<label class="file-label">
+								<input class="file-input" type="file" id="horoscope-update" name="horoscope">
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fa fa-upload"></i>
+									</span>
+									<span class="file-label">
+										Update Horoscope
+									</span>
+								</span>
+							</label>
+						</div>
+					</form>
+				</div>
+				<div class="column">
+					<div class="container">
+						<table class="table is-fullwidth is-completely-borderless">
+							<th class="is-size-5 is-block has-background-primary has-text-light has-padding-10">Account Details</th>
+							<tr >
+								<th class="has-text-right">Email :</th>
+								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.email }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Name :</th>
+								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="name"><span id="name">{{ profile.user.name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr> 
+							<tr >
+								<th class="has-text-right">Age :</th>
+								<td class="has-text-left"> &nbsp; <span id="age">{{ profile.user.age }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Date of Birth :</th>
+								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="dob"><span id="dob">{{ profile.user.dob }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr>
+								<th class="has-text-right">Gender :</th>
+								<td class="has-text-left"> &nbsp; <span id="gender">{{ profile.user.gender }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Phone :</th>
+								<td class="has-text-left"> &nbsp; <span id="phone">{{ profile.user.phone }}</span></td>
+							</tr>
+							<th class="is-size-5 is-block has-background-primary has-margin-top-10 has-text-light has-padding-10">Personal Details</th>
+							<tr >
+								<th class="has-text-right">Education :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="education"><span id="education">{{ profile.education }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr> 
+							<tr >
+								<th class="has-text-right">Occupation :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="occupation"><span id="occupation">{{ profile.occupation }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Salary :</th>
+								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="salary"><span id="salary">{{ profile.salary }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Marital Status :</th>
+								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="marital_status"><span id="marital_status">{{ profile.marital_status }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Religion :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="religion"><span id="religion">{{ profile.religion }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Caste :</th>
+								<td class="has-text-left"> &nbsp; <span id="caste">{{ profile.caste }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Sub-caste :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="subcaste"><span id="subcaste">{{ profile.subcaste }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Rasi :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="rasi"><span id="rasi">{{ profile.rasi }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Nakshatra :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="nakshatra"><span id="nakshatra">{{ profile.nakshatra }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Height :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="height"><span id="height">{{ profile.height }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Weight :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="weight"><span id="weight">{{ profile.weight }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Complexion :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="complexion"><span id="complexion">{{ profile.complexion }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Physical Disability :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="physical_disability"><span id="physical_disability">{{ profile.physical_disability }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Phone :</th>
+								<td class="has-text-left"> &nbsp;<span id="phone1">{{ profile.user.phone }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Alternate Phone :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="phone2"><span id="phone2">{{ profile.phone2 }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Current City :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="city"><span id="city">{{ profile.city }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Current State :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="state"><span id="state">{{ profile.state }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Native City :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="native_city"><span id="native_city">{{ profile.native_city }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Native State :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="native_state"><span id="native_state">{{ profile.native_state }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Bio :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="bio"><span id="bio">{{ profile.bio }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<th class="is-size-5 is-block has-background-primary has-text-light has-margin-top-10 has-padding-10">Family Details</th>
+
+							<tr >
+								<th class="has-text-right">Father's Name :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="father_name"><span id="father_name">{{ profile.father_name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr> 
+							<tr >
+								<th class="has-text-right">Father's Profession :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="father_prof"><span id="father_prof">{{ profile.father_prof }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Mother's Name :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="mother_name"><span id="mother_name">{{ profile.mother_name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr> 
+							<tr >
+								<th class="has-text-right">Mother's Profession :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="mother_prof"><span id="mother_prof">{{ profile.mother_prof }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Sibling Brother(s) :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_bro"><span id="sibling_bro">{{ profile.sibling_bro }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Married sibling brother(s) :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_bro_married"><span id="sibling_bro_married">{{ profile.sibling_bro_married }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Sibling Sister(s) :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_sis"><span id="sibling_sis">{{ profile.sibling_sis }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Married sibling sister(s) :</th>
+								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_sis_married"><span id="sibling_sis_married">{{ profile.sibling_sis_married }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="has-text-centered has-margin-top-50">
+				<form action='deactivate_user' method="post">
+					{% csrf_token %}
+					<p class="is-size-4">Want to deactivate your account?</p>
+					<input type="hidden" name="user" value="{{ request.user }}">
+					<div class="select">
+						<select name="reason">
+							<option>Marriage Fixed</option>
+							<option>Postponed</option>
+							<option>Not Now</option>
+							<option>Reason Not Listed</option>
+						</select>
+					</div>
+					<button class="button is-danger" type="submit">Delete Account</button>
+				</form>
+			</div>
+		</div>
+	</section>
+	<!--Footer-->
+	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20">
+		<div class="container has-text-centered has-text-white">
+			<p class="is-size-5">TamilnaduYadava</p>
+			<p><a href="" class="has-text-white">About us</a> | <a href="" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+			<p class="is-size-7 has-text-light">Developed by JM</p>
+		</div>
+	</section>
+
+	<!-- Modal for field updates-->
+	<div class="modal">
+		<div class="modal-background"></div>
+		<div class="modal-content">
+			<!-- Any other Bulma elements you want -->
+			<div class="container is-block has-background-white has-padding-20 has-margin-5" style="border-radius: 5px">
+				<p class="is-size-4"><Strong>Provide new details</Strong></p><br>
+				<div class="control" id="modal-control">
+
+				</div>
+				<div class="has-text-right has-margin-top-30">
+					<button class="button is-outlined is-danger" id="close">Back</button>
+					<button class="button is-primary" id="update">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

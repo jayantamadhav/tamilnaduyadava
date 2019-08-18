@@ -1,0 +1,231 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | {{ request.user.name }}</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+	<style>
+	.divider-header{
+		margin-top: 10%;
+		font-size: 1.5em;
+		font-weight: 600;
+		color: #F60;
+		text-shadow: 0 1px 1px #FFFFFF;
+		text-transform: uppercase;
+	}
+	.divider {
+		border-bottom: 1px solid #FFF;
+		background-color: #DADADA;
+		height: 1px;
+		margin: 0.5em 0px 1.5em;
+	}
+	.divider span {
+		display: block;
+		width: 80%;
+		height: 1px;
+		background-color: #F60;
+	}
+</style>
+</head>
+<body style="background:none">
+	<!-- Header -->
+	<div class="header">
+		<section class="is-fullhd">
+			<nav class="navbar has-padding-left-20 has-padding-right-20" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="{% url 'home' %}">
+						<p class="is-size-3 is-size-4-mobile has-text-primary">TamilnaduYadava</p>
+					</a>
+
+					<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
+				</div>
+
+				<div id="navbarBasicExample" class="navbar-menu">
+					<div class="navbar-start">
+
+					</div>
+
+					<div class="navbar-end">
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								Help
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'about_us' %}">
+									About Us
+								</a>
+								<a class="navbar-item" href="{% url 'privacy_policy' %}">
+									Privacy Policy
+								</a>
+							</div>
+						</div>
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								<strong>Hi, {{request.user.name}}</strong>
+								<figure class="image is-32x32">
+									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+								</figure>
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'manage_profile' %}">
+									Manage Profile
+								</a>
+								<a class="navbar-item" href="{% url 'logout' %}">
+									Log out
+								</a>
+							</div>
+							
+						</div>	
+					</div>
+				</div>
+			</nav>
+		</section>
+	</div>
+
+	<!-- Profile -->
+	<section class="container is-block has-background-white has-padding-20 has-margin-top-30">
+		<div class="columns has-margin-top-30">
+			<div class="column is-4 has-text-centered">
+				<figure class="view_image image is-256x256 is-inline-block">
+					<img src="{{view_profile_image.file.url}}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
+				</figure>
+				<div class="has-margin-top-50">
+					{% if view_profile.horoscope.url %}
+					<a href="{{view_profile.horoscope.url}}" target="_blank">
+						<button class="button is-primary">View Horoscope</button>
+					</a>
+					<a href="{{view_profile.horoscope.url}}" download>
+						<button class="button is-primary"><i class="fa fa-download"></i> &nbsp; Horoscope</button>
+					</a>
+					{% else %}
+					<a href="#">
+						<button class="button is-primary">View Horoscope</button>
+					</a>
+					<a href="#">
+						<button class="button is-primary"><i class="fa fa-download"></i> &nbsp; Horoscope</button>
+					</a>
+					{% endif %}
+				</div>
+				<div class="divider-header has-margin-top-50">Contact</div>
+				<p><strong>Phone</strong> : {{view_profile.user.phone}} {% if view_profile.phone2 %} / {{view_profile.phone2}} {% endif %}</p>
+				<p><strong>Email</strong> : {{view_profile.user.email}}</p>
+			</div>
+			<div class="column has-padding-30">
+				<p class="is-size-2" style="color: #F60;">{{ view_profile.user.name}} <span class="is-size-6 has-text-primary has-margin-left-30"><i class="fa fa-map-marker"></i> {{ view_profile.city }}</span></p>
+				<p> {{ view_profile.user.age }} yrs, {{ view_profile.height }}, {{view_profile.weight}} Kgs, <strong>{{ view_profile.marital_status }}</strong></p><br>
+
+				<p> <Strong>D.O.B</Strong>  : {{ view_profile.user.dob }}</p><br>
+				<table class="table is-completely-borderless">
+					<tr>
+						<th>Religion</th>
+						<td>{{ view_profile.religion }}</td>
+					</tr>
+					<tr>
+						<th>Caste</th>
+						<td>{{ view_profile.caste }}</td>
+					</tr>
+					<tr>
+						<th>Sub-caste</th>
+						<td>{{ view_profile.subcaste }}</td>
+					</tr>
+					<tr>
+						<th>Rasi</th>
+						<td>{{ view_profile.rasi }}</td>
+					</tr>
+					<tr>
+						<th>Nakshatra</th>
+						<td>{{ view_profile.nakshatra }}</td>
+					</tr>
+				</table>
+				<p> <Strong>Education</Strong>  : {{ view_profile.education }}</p>
+				<p> <Strong>Degree</Strong>  : {{ view_profile.degree }}</p>
+				<p> <Strong>Occupation</Strong> : {{ view_profile.occupation }}</p>
+				<p> <Strong>Organization</Strong> : {{ view_profile.organization }}</p>
+				<p> <Strong>Salary</Strong>  : &#8377;{{ view_profile.salary }}</p>
+				{% if view_profile.native_city %}
+				<p> <Strong>Native</Strong>  : {{ view_profile.native_city }}, {{ view_profile.native_state }}</p>
+				{% endif %}			
+				<p><strong>About</strong></p>
+				{% if view_profile.bio %}
+				<p>{{ view_profile.bio }}</p>
+				{% else %}
+				<p>The user did not add Bio</p>
+				{% endif %}
+
+				<h1 class="divider-header">Family</h1>
+				<div class="divider"> 
+					<span class="divider-span"></span>
+				</div>
+				<table class="table is-completely-borderless has-margin-top-30">
+					<tr>
+						<th>Father's name</th>
+						<td>{{ view_profile.father_name }}</td>
+					</tr>
+					<tr>
+						<th>Father's Profession</th>
+						<td>{{ view_profile.father_prof }}</td>
+					</tr>
+					<tr>
+						<th>Mother's name</th>
+						<td>{{ view_profile.mother_name }}</td>
+					</tr>
+					<tr>
+						<th>Mother's Profession</th>
+						<td>{{ view_profile.mother_prof }}</td>
+					</tr>
+				</table>
+				<p><strong>Brothers</strong> : {{view_profile.sibling_bro}}, <strong>Married</strong> : {{view_profile.sibling_bro_married}}</p>
+				<p><strong>Sisters</strong> : {{view_profile.sibling_sis}}, <strong>Married</strong> : {{view_profile.sibling_sis_married}}</p>
+
+				
+			</div>
+		</div>
+	</section>
+
+	<!--Footer-->
+	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20">
+		<div class="container has-text-centered has-text-white">
+			<p class="is-size-5">TamilnaduYadava</p>
+			<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+			<p class="is-size-7 has-text-light">Developed by JM</p>
+		</div>
+	</section>
+	<div class="modal">
+		<div class="modal-background"></div>
+		<div class="modal-content">
+			<p class="image is-4by3">
+				<img src="{{view_profile_image.file.url}}" alt="">
+			</p>
+		</div>
+		<button class="modal-close is-large" aria-label="close"></button>
+	</div>
+	<script>
+		$(".view_image").on("click", function() {
+			$('.modal').addClass('is-active');
+		//$(".popup-overlay, .popup-content").removeClass("active");	
+	});
+		$(".modal-close").on("click", function() {
+			$('.modal').removeClass('is-active');
+		//$(".popup-overlay, .popup-content").removeClass("active");	
+	});
+</script>
+</body>
+</html>

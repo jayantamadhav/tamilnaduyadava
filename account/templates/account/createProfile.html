@@ -1,0 +1,610 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TamilnaduYadava | Profile</title>
+
+    <meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/dropzone.js' %}"></script>
+    <style>
+
+    body {
+        background-color: #f1f1f1;
+    }
+
+    #regForm {
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: 100px auto;
+        padding: 40px;
+        width: 70%;
+        min-width: 300px;
+        box-shadow: 5px 5px 20px #333;
+        border-radius: 5px;
+    }
+
+    /* Mark input boxes that gets an error on validation: */
+    .invalid {
+        background-color: #ffdddd;
+    }
+
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;  
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    .step.active {
+        opacity: 1;
+    }
+
+    /* Mark the steps that are finished and valid: */
+    .step.finish {
+        background-color: #4CAF50;
+    }
+</style>
+
+</head>
+<body style="height: 100%">
+    <div class="section" style="min-height: 100vh !important">
+        <div class="has-text-centered">
+            <p class="is-size-1 is-size-3-mobile"><a href="{% url 'home' %}" class=" has-text-white">TamilnaduYadava</a></p>
+        </div>
+        <form id="regForm" class="has-margin-top-10" method="post"  enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% if profile_form.errors %}
+            {% for field in profile_form %}
+            {% for error in field.errors %}
+            <div class="has-text-danger">
+                <strong>{{field}} {{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="has-text-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <p class="is-size-3 has-text-centered has-text-primary"> {{ request.user.name }}'s Profile </p>
+
+            <p id="invalid-message" style="display: none" class="has-text-danger has-text-right">Please Fill out all the fields with valid Infomartion</p>
+
+            <!--Profile Self Details-->
+            <div class="tab has-padding-top-20 ">
+                <p class="is-size-4 is-size-5-mobile">Personal Details</p><br>
+                <p>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Education</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.education class="input" placeholder="Select Education" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey"></label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.degree class="input" placeholder="Degree details" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Work</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.occupation class="input" placeholder="Current occupation" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey"></label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.organization class="input" placeholder="Organization" %}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.salary class="input numbers" placeholder="Salary" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Marital Status</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.marital_status class="input" placeholder="Select" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Religion</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.religion class="input" placeholder="Religion" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Caste</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.caste class="input" disabled="true" %}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.subcaste class="input" placeholder="Sub-caste" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Rasi</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.rasi class="input" placeholder="Rasi" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Nakshatra</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.nakshatra class="input" placeholder="Nakshatra" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Physical</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.height class="input" placeholder="Height(in cm)" %}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.weight class="input" placeholder="Weight" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Physical Disability</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.physical_disability class="input" placeholder="Physical Disability" %}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.pd_info class="input" placeholder="If Yes, Please fill this up" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Complexion</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.complexion class="input" placeholder="Complexion" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+
+            <!--Profile Family Details-->
+            <div class="tab  has-padding-top-20">
+                <p class="is-size-4 is-size-5-mobile">Tell Us About Your Family</p><br>
+                <p>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Father's Name</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.father_name class="input" placeholder="Father Name..." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Profession</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.father_prof class="input" placeholder="Father profession..." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Mother's Name</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.mother_name class="input" placeholder="Mother Name..." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Profession</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.mother_prof class="input" placeholder="Mother profession..." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Sibling Brother(s)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.sibling_bro class="input" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Brothers Married?</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.sibling_bro_married class="input"%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Sibling Sister(s)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.sibling_sis class="input" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Sisters Married?</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.sibling_sis_married class="input"%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p> 
+            </div>
+
+            <!--Contact Details-->
+            <div class="tab  has-padding-top-20">
+                <p class="is-size-4 is-size-5-mobile">Tell Us How To Reach You</p><br>
+                <p>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Phone</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="text" class="input" name="phone1" disabled value="{{request.user.phone}}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.phone2 class="input numbers" type="number" maxlength="10" placeholder="Alternate phone(optional)" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Native(Optional)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.native_city class="input" placeholder="Native city(Optional)" %}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.native_state class="input" placeholder="Native state(Optional)" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Current</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.city class="input" placeholder="Current City..." %}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.state class="input" placeholder="Current State..." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label has-text-grey">Address</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea class="textarea" placeholder="Current address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p>
+            </div>
+
+            <!--User Bio-->
+            <div class="tab  has-padding-top-20">
+                <p class="is-size-4 is-size-5-mobile">Almost done...</p><br>
+                <div class="container">
+                    <div class="columns">
+                        <div class="column is-4">
+                            <p class="has-text-grey">Profile Photo</p>
+                            <div class="container has-padding-10">
+                                <figure class="image is-128x128  has-background-light is-block has-padding-10">
+                                    <img class="avatar" name="avatar" src="{% static 'media/default-avatar.png' %}" width="128px" height="128px" data-crop-image-ratio="1" style="border:2px dashed">
+                                </figure>
+                            </div>
+                            <div class="file is-primary">
+                                <label class="file-label">
+                                    <input class="file-input" id="file-input" type="file" name="profile_image">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fa fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Upload a photo
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="column">
+                            <div class="file is-primary">
+                                <label class="file-label">
+                                    {% render_field profile_form.horoscope class="file-input" id="file-upload" type="file" %}
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fa fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            <p id="file-label">Upload your Horoscope</p>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <span>Either Jpg , PDF or other supported images</span>
+                            <br><br>
+                            <div class="field">
+                                <div class="control">
+                                    {% render_field profile_form.bio class="textarea" placeholder="Something about yourself (Optional) " %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            
+            <div style="overflow:auto;">
+                <div style="float:right;">
+                    <button type="button" class="button is-danger is-outlined" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                    <button type="button" class="button is-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </div>
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <!-- Circles which indicates the steps of the form: -->
+            <div style="text-align:center;margin-top:40px;">
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+} else {
+    document.getElementById("prevBtn").style.display = "inline";
+}
+if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Submit";
+} else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+}
+  //... and run a function that will display the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+}
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+    // A loop that checks every input field in the current tab:
+    for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+        console.log(y[i]);
+        if(y[i].name =="native_city" || y[i].name =="native_state" || y[i].name == "bio" || y[i].name == "caste" || y[i].name == "phone1" || y[i].name == "phone2" || y[i].name == "pd_info") break;
+            else{
+                y[i].className += " is-danger";
+                valid = false;
+                document.getElementById("invalid-message").style.display = "block";
+            }
+        }
+        else{
+          document.getElementById("invalid-message").style.display = "none";
+      }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+}
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+}
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
+$('.numbers').keypress(function(key) {
+    if(key.charCode < 48 || key.charCode > 57) return false;
+    if($(this).val().length > 9) return false;
+});
+</script>
+</body>
+</html>

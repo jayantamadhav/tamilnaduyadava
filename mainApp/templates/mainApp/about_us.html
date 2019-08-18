@@ -1,0 +1,153 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | About Us</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+	<Style>
+	.popup-overlay {
+		visibility:hidden;
+	}
+
+	.popup-content {
+		visibility:hidden;
+	}
+	.popup-overlay.active{
+		visibility:visible;
+	}
+
+	.popup-content.active {
+		visibility:visible;
+	}
+	.edit:hover{
+		color: blue;
+		cursor: pointer;
+	}
+</Style>
+</head>
+<body style="background:none">
+	<!-- Header -->
+	<div class="header">
+		<section class="is-fullhd">
+			<nav class="navbar has-padding-left-20 has-padding-right-20" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="{% url 'home' %}">
+						<p class="is-size-3 is-size-4-mobile has-text-primary">TamilnaduYadava</p>
+					</a>
+
+					<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
+				</div>
+
+				<div id="navbarBasicExample" class="navbar-menu">
+					<div class="navbar-start">
+
+					</div>
+
+					<div class="navbar-end">
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								Help
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item is-active" href="#">
+									About Us
+								</a>
+								<a class="navbar-item" href="{% url 'privacy_policy' %}">
+									Privacy Policy
+								</a>
+							</div>
+						</div>
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								<strong>Hi, {{request.user.name}}</strong>
+								<figure class="image is-32x32">
+									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+								</figure>
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'manage_profile' %}">
+									Manage Profile
+								</a>
+								<a class="navbar-item" href="{% url 'logout' %}">
+									Log out
+								</a>
+							</div>
+							
+						</div>	
+					</div>
+				</div>
+			</nav>
+		</section>
+	</div>
+	
+	<!--Main Content-->
+	<section class="section">
+		<div class="container is-block has-background-white has-padding-20 has-margin-top-20 has-text-centered" style="box-shadow: 2px 2px 4px;">
+			<p class="is-size-2">About Us</p><br>
+			<p class="has-margin-top-20 is-size-4 is-size-6-mobile">
+				Tamilnaduyadava.com is a registered product of _____ private limited company. We wish to cater the best matchmaking services for the profiles within Tamilnadu Yadava community. We also look forward to extend our services in providing major updates from Tamilnadu Yadava community, photography services, Catering services, Event organizing, Live marriage coverage. With best talents working for you, we assure a quality services right from the moment you start using tamilnaduyadava.com.
+			</p>
+			<div class="has-text-left has-padding-20 has-margin-top-30">
+				<p"><span class="is-size-4 is-size-5-mobile">What we assure to deliver:</span><br><br>
+				<span class="is-size-5 is-size-6-mobile">
+					<div class="notification is-link">
+						1.	Best matches within Tamilnadu Yadava community<br>
+					</div>
+					<div class="notification is-link">
+						2.	Best user friendly website with easy navigation.<br>
+					</div>
+					<div class="notification is-link">
+						3.	Very affordable payment plans.<br> 
+					</div>
+					<div class="notification is-link">
+						4.	Safe and secured third party payment gateway.<br>
+					</div>
+					<div class="notification is-link">
+						5.	Quality customer service.
+					</div>
+				</span><br>
+			</p> 
+		</div>
+		<div class=""
+	</div>
+</section>
+
+<!--Contact details-->
+<section class="container is-block has-background-white has-margin-top-30 has-padding-20" style="box-shadow: 2px 2px 4px;">
+	<p class="is-size-3 is-size-4-mobile">Contact Us : </p>
+	<p class="is-size-5 is-size-6-mobile"> TamilNaduYadava.com <br>
+		Email: admin@tamilnaduyadava.com<br>
+		Phone: (to be added soon)<br> 
+		Address: (to be added soon)<br>
+	</p>
+
+</section>
+
+<!--Footer-->
+<section class="section is-block has-background-dark has-margin-top-40 has-padding-20">
+	<div class="container has-text-centered has-text-white">
+		<p class="is-size-5">TamilnaduYadava</p>
+		<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+		<p class="is-size-7 has-text-light">Developed by JM</p>
+	</div>
+</section>
+</body>
+</html>

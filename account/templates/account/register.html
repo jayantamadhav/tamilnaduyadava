@@ -1,0 +1,148 @@
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Register</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+	<div class="section" style="min-height:100vh">
+		<div class="has-text-centered">
+			<p class="is-size-1 is-size-3-mobile"><a href="{% url 'home' %}" class=" has-text-white">TamilnaduYadava</a></p>
+		</div>
+		<div class="is-block has-background-white has-margin-top-100 has-padding-30" style="margin:auto; max-width: 500px; border-radius: 5px;box-shadow: 5px 5px  25px #000">
+			<p class="has-text-centered is-size-5">
+				<strong>Let's set up your account,<br>
+				while we find Matches for you!</strong>
+			</p>
+			<form class="has-margin-top-10" method="post" novalidate>
+				{% csrf_token %}
+
+				{% if form.non_field_errors %}
+				<div class="alert alert-danger" role="alert">
+					{% for error in form.non_field_errors %}
+					{{ error }}
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				<div class="field">
+					<label class="label">Enter your email id</label>
+					<div class="control">
+						{% render_field registration_form.email type="email" class="input" placeholder="Enter email id"%}
+					</div>
+					{% if registration_form.email.errors %}
+					<p class="help is-danger">{{ registration_form.email.errors }}</p>
+					{% endif %}
+				</div>
+
+				<div class="field">
+					<label class="label">Username</label>
+					<div class="control">
+						{% render_field registration_form.username type="text" class="input" placeholder="Enter username"%}
+					</div>
+					{% if registration_form.username.errors %}
+					<p class="help is-danger">{{ registration_form.username.errors }}</p>
+					{% endif %}
+				</div>
+
+				<div class="field">
+					<label class="label">Name</label>
+					<div class="control">
+						{% render_field registration_form.name type="text" class="input" placeholder="Name"%}
+					</div>
+					{% if registration_form.name.errors %}
+					<p class="help is-danger">{{ registration_form.name.errors }}</p>
+					{% endif %}
+				</div>
+
+				<div class="field has-addons">
+					<p class="control">
+						<a class="button is-static">
+							+91
+						</a>
+					</p>
+					<div class="control is-expanded">
+						{% render_field registration_form.phone type="tel" class="input numbers" placeholder="Phone Number" %}
+					</div>
+					{% if registration_form.phone.errors %}
+					<p class="help is-danger">{{ registration_form.phone.errors }}</p>
+					{% endif %}					
+				</div>
+
+				<div class="columns">
+					<div class="column">
+						<div class="field">
+							<label class="label">Gender</label>
+							<div class="control">
+								{% render_field registration_form.gender class="input" placeholder="Gender" %}
+							</div>
+							{% if registration_form.gender.errors %}
+							<p class="help is-danger">{{registration_form.gender.errors}}</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="column">
+						<div class="field">
+							<label class="label">D.O.B</label>
+							<div class="control">
+								{% render_field registration_form.dob type="text" class="input" placeholder="DD/MM/YYYY"%}
+							</div>
+							{% if registration_form.dob.errors %}
+							<p class="help is-danger">{{ registration_form.dob.errors }}</p>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="columns">
+					<div class="column">
+						<div class="field">
+							<label class="label">Create Password</label>
+							<div class="control">
+								{% render_field registration_form.password1 type="password" class="input" placeholder="Create password" %}
+							</div>
+							{% if registration_form.password1.errors %}
+							<p class="help is-danger">{{ registration_form.password1.errors }}</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="column">
+						<div class="field">
+							<label class="label">Confirm Password</label>
+							<div class="control">
+								{% render_field registration_form.password2 type="password" class="input" placeholder="Confirm password" %}
+							</div>
+							{% if registration_form.password2.errors %}
+							<p class="help is-danger">{{ registration_form.password2.errors }}</p>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="has-text-centered">
+					<div>{% render_field registration_form.captcha %}</div>
+					<div class="has-text-centered has-margin-top-20">
+						<button type="submit" class="button is-large is-primary">Register</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		$('.numbers').keypress(function(key) {
+			if(key.charCode < 48 || key.charCode > 57) return false;
+			if($(this).val().length > 9) return false;
+		});
+	</script>
+</body>
+</html>

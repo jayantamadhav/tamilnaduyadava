@@ -1,0 +1,16 @@
+
+body {
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.35), 
+      rgba(0, 0, 0, 0.85)
+    ),
+    /* bottom, image */
+    url(../media/banner2.jpg);
+
+  background-position: center center;
+  background-size: cover ;
+  background-attachment: fixed;
+}
+.login-card{
+	border-radius:10px;
+}

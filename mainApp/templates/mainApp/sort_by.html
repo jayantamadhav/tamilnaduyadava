@@ -1,0 +1,370 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Feed</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+
+</head>
+<body style="background:none">
+	<!-- Header -->
+	<div class="header">
+		<section class="is-fullhd">
+			<nav class="navbar has-padding-left-20 has-padding-right-20" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="{% url 'home' %}">
+						<p class="is-size-3 is-size-4-mobile has-text-primary">TamilnaduYadava</p>
+					</a>
+
+					<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
+				</div>
+
+				<div id="navbarBasicExample" class="navbar-menu">
+					<div class="navbar-start">
+
+					</div>
+
+					<div class="navbar-end">
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								Help
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'about_us' %}">
+									About Us
+								</a>
+								<a class="navbar-item" href="{% url 'privacy_policy' %}">
+									Privacy Policy
+								</a>
+							</div>
+						</div>
+						<div class="navbar-item has-dropdown is-hoverable">
+							<a class="navbar-link">
+								<strong>Hi, {{request.user.name}}</strong>
+								<figure class="image is-32x32">
+									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+								</figure>
+							</a>
+
+							<div class="navbar-dropdown">
+								<a class="navbar-item" href="{% url 'manage_profile' %}">
+									Manage Profile
+								</a>
+								<a class="navbar-item" href="{% url 'logout' %}">
+									Log out
+								</a>
+							</div>
+							
+						</div>	
+					</div>
+				</div>
+			</nav>
+		</section>
+	</div>
+
+	<!-- Content Container -->
+	<section class="section">
+		<div class="columns is-variable">
+			<!-- LEFT COLUMN-->
+			<div class="column is-3 has-padding-10">
+				<div class="card">
+					<div class="card-content">
+						<div class="media">
+							<div class="media-left">
+								<figure class="image is-64x64">
+									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+								</figure>
+							</div>
+							<div class="media-content">
+								<p class="title is-4">{{ request.user.name }}</p>
+								<p class="subtitle is-6"><a href="{% url 'manage_profile' %}">Edit profile</a></p>
+							</div>
+						</div>
+
+						<div class="content">
+							<span class="tag is-light">
+								<i class="fa fa-check"></i> &nbsp;Verified
+							</span>
+						</div>
+					</div>
+				</div>	
+			</div>
+
+
+			<!--MID COLUMN-->
+			<div class="column is-6 has-padding-10">
+				<div>
+					<div>
+						<p class="has-margin-left-10 has-margin-top-20 has-text-grey">Sort by</p>
+						<div class="select">
+							<select data-attribute="age">
+								<option selected disabled>Age</option>
+								<option>Ascending</option>
+								<option>Descending</option>
+							</select>
+						</div>
+						<div class="select">
+							<select data-attribute="name">
+								<option selected disabled>Name</option>
+								<option>Ascending</option>
+								<option>Descending</option>
+							</select>
+						</div>
+						<div class="dropdown">
+							<div class="dropdown-trigger">
+								<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+									<span>Rasi</span>
+									<span class="icon is-small">
+										<i class="fa fa-angle-down" aria-hidden="true"></i>
+									</span>
+								</button>
+							</div>
+							<div class="dropdown-menu" id="dropdown-menu" role="menu">
+								<div class="dropdown-content">
+									<a href="{% url 'sort_by' key='rasi' value='Mesham' %}" class="dropdown-item" >Mesham</a>
+									<a href="{% url 'sort_by' key='rasi' value='Rishabam' %}" class="dropdown-item" >Rishabam</a>
+									<a href="{% url 'sort_by' key='rasi' value='Mithunam' %}" class="dropdown-item" > Mithunam </a>
+									<a href="{% url 'sort_by' key='rasi' value='Kadakam' %}" class="dropdown-item" > Kadakam </a>
+									<a href="{% url 'sort_by' key='rasi' value='Simham' %}" class="dropdown-item" > Simham </a>
+									<a href="{% url 'sort_by' key='rasi' value='Kanni' %}" class="dropdown-item" > Kanni </a>
+									<a href="{% url 'sort_by' key='rasi' value='Tulam' %}" class="dropdown-item" > Tulam </a>
+									<a href="{% url 'sort_by' key='rasi' value='Vrischikam' %}" class="dropdown-item" > Vrischikam </a>
+									<a href="{% url 'sort_by' key='rasi' value='Dhanusu' %}" class="dropdown-item" > Dhanusu </a>
+									<a href="{% url 'sort_by' key='rasi' value='Makaram' %}" class="dropdown-item" > Makaram </a>
+									<a href="{% url 'sort_by' key='rasi' value='Kumbham' %}" class="dropdown-item" > Kumbham </a>
+									<a href="{% url 'sort_by' key='rasi' value='Meenam' %}" class="dropdown-item" > Meenam </a>
+								</div>
+							</div>
+						</div>
+						<div class="dropdown">
+							<div class="dropdown-trigger">
+								<button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+									<span>Nakshatra</span>
+									<span class="icon is-small">
+										<i class="fa fa-angle-down" aria-hidden="true"></i>
+									</span>
+								</button>
+							</div>
+							<div class="dropdown-menu" id="dropdown-menu" role="menu">
+								<div class="dropdown-content">
+									<a href="{% url 'sort_by' key='nakshatra' value='Aswini' %}" class="dropdown-item" >Aswini</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Bharani' %}" class="dropdown-item" >Bharani</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Karthigai' %}" class="dropdown-item" >Karthigai</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Rohini' %}" class="dropdown-item" >Rohini</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Mrigasheersham' %}" class="dropdown-item" >Mrigasheersham</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Thiruvaathirai' %}" class="dropdown-item" >Thiruvaathirai</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Punarpoosam' %}" class="dropdown-item" >Punarpoosam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Poosam' %}" class="dropdown-item" >Poosam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Aayilyam' %}" class="dropdown-item" >Aayilyam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Makam' %}" class="dropdown-item" >Makam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Pooram' %}" class="dropdown-item" >Pooram</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Uthiram' %}" class="dropdown-item" >Uthiram</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Hastham' %}" class="dropdown-item" >Hastham</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Chithirai' %}" class="dropdown-item" >Chithirai</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Swaathi' %}" class="dropdown-item" >Swaathi</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Visaakam' %}" class="dropdown-item" >Visaakam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Anusham' %}" class="dropdown-item" >Anusham</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Kettai' %}" class="dropdown-item" >Kettai</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Moolam' %}" class="dropdown-item" >Moolam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Pooraadam' %}" class="dropdown-item" >Pooraadam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Uthiraadam' %}" class="dropdown-item" >Uthiraadam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Thiruvonam' %}" class="dropdown-item" >Thiruvonam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Avittam' %}" class="dropdown-item" >Avittam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Sadayam' %}" class="dropdown-item" >Sadayam</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Poorattathi' %}" class="dropdown-item" >Poorattathi</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='>Uthirattathi' %}" class="dropdown-item" >Uthirattathi</a>
+									<a href="{% url 'sort_by' key='nakshatra' value='Revathi' %}" class="dropdown-item" >Revathi</a>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+
+				<!--PROFILES-->
+				<div class="profiles container has-margin-top-10 is-block has-background-white has-padding-10">
+					<p class="is-size-4 has-text-grey has-padding-10">Profiles</p>
+					{% if show_profiles%}
+					{% for sp in show_profiles %}
+					<article class="articles media has-border-top-1 has-padding-10" data-age={{sp.user.age}} data-name={{sp.user.name}} data-rasi={{sp.rasi}} data-nakshatra={{sp.nakshatra}}>
+						<figure class="media-left">
+							<figure class="image is-128x128">
+								{% for image in sp.profileimage_set.all %}
+								{% if forloop.first %}
+								<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
+								{%endif%}	
+								{% endfor %}
+							</figure>
+						</figure>
+						<div class="media-content">
+							<div class="content">
+								<p>
+									<strong>{{sp.user.name}}</strong> <small><a href="{% url 'view_profile' id=sp.user.id %}">View profile</a></small>
+									<br>
+									<span class="is-size-7 has-text-grey"><i class="fa fa-map-marker"></i> &nbsp;{{ sp.city }}</span><br>
+									<span class="is-size-7 has-text-grey">Joined {{sp.user.date_joined | date:"d M, Y"}}</span><br>
+									{{sp.user.age}} yrs, {{sp.height}}cm, {{sp.religion}}, {{sp.caste}}, {{sp.subcaste}}<br> {{sp.rasi}}, {{sp.nakshatra}}<br> 
+									{{sp.degree}}<br> 
+									<a href="{% url 'view_profile' id=sp.user.id %}">view more</a>
+								</p>
+							</div>
+						</div>
+					</article>
+					{% endfor %}
+					{% else %}
+					<p class="has-text-danger has-padding-20">No Profiles found.</p>
+					{% endif %}
+				</div>
+
+				{% if show_profiles.has_other_pages %}
+				<nav class="pagination is-rounded is-small has-margin-top-20" role="navigation" aria-label="pagination">
+					{% if show_profiles.has_previous %}
+					<a class="pagination-previous" href="?page={{ show_profiles.previous_page_number }}">Previous</a>
+					{% else %}
+					<a class="pagination-previous" disabled>Previous</a>
+					{% endif %}
+
+					<ul class="pagination-list">
+						{% for i in show_profiles.paginator.page_range %}
+						{% if show_profiles.number == i %}
+						<li>
+							<a class="pagination-link is-current" aria-current="page">{{ i }}</a>
+						</li>
+						{% else %}
+						<li>
+							<a class="pagination-link"  href="?page={{ i }}" >{{ i }}</a>
+						</li>
+						{% endif %}
+						{% endfor %}
+					</ul>
+
+					{% if show_profiles.has_next %}
+					<a class="pagination-next" href="?page={{ show_profiles.next_page_number }}">Next</a>
+					{% else %}
+					<a class="pagination-next" disabled>Next</a>
+					{% endif %}
+					
+				</nav>
+				{% endif%}
+			</div>
+			<div class="column is-3 has-padding-10">
+				<div class="container has-margin-top-10 is-block has-background-primary has-padding-10"  style="box-shadow: 2px 2px 5px;border-radius: 5px">
+					<p class="is-size-4 has-text-light">Latest Profiles</p>
+					{% if latest_profiles %}
+					{% for profile in latest_profiles %}
+					<div class="card" data-rasi='{{profile.rasi}}' data-nakshatra='{{profile.nakshatra}}'>
+						<div class="card-content">
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-64x64">
+										{% for image in profile.profileimage_set.all %}
+										<img src="{{image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+										{% endfor %}
+									</figure>
+								</div>
+								<div class="media-content">
+									<p class="title is-5">{{profile.user.name}}</p>
+									<p class="subtitle is-7">{{profile.user.age}} yrs, {{profile.height}}cm, {{profile.religion}}, {{profile.caste}}, {{profile.subcaste}}<br>
+										{{profile.rasi}}, {{profile.nakshatra}}<br><a href="{% url 'view_profile' id=profile.user.id %}">view profile</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						{% else %}
+						<p style="color: #F30"> No profiles yet, stay tuned</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--Footer-->
+	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20" style="bottom: 0">
+		<div class="container has-text-centered has-text-white">
+			<p class="is-size-5">TamilnaduYadava</p>
+			<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+			<p class="is-size-7 has-text-light">Developed by JM</p>
+		</div>
+	</section>
+	<script>
+		$(document).ready( function(){
+			$('.select').on('change', function(){
+				var key = $('select', this).val();
+				var attribute = $('select', this).attr('data-attribute');
+
+				if(attribute == 'age'){
+					if(key == 'Ascending'){
+						$(".profiles article").sort(sort_li).appendTo('.profiles');
+						function sort_li(a, b) {
+							return ($(b).data('age')) < ($(a).data('age')) ? 1 : -1;
+						}
+					}
+					else{
+						$(".profiles article").sort(sort_li).appendTo('.profiles');
+						function sort_li(a, b) {
+							return ($(b).data('age')) > ($(a).data('age')) ? 1 : -1;
+						}
+					}
+				}
+				else if(attribute == 'name'){
+					if(key == 'Ascending'){
+						$(".profiles article").sort(sort_li).appendTo('.profiles');
+						function sort_li(a, b) {
+							return ($(b).data('name')) < ($(a).data('name')) ? 1 : -1;
+						}
+					}
+					else{
+						$(".profiles article").sort(sort_li).appendTo('.profiles');
+						function sort_li(a, b) {
+							return ($(b).data('name')) > ($(a).data('name')) ? 1 : -1;
+						}
+					}
+				}
+				else if(attribute == 'rasi'){
+					var profiles = $('.articles');
+
+					profiles.hide()
+					profiles.each(function(i, el) {
+						if($(el).attr('data-rasi') == key) {
+							$(el).show();
+						}
+					})
+				}
+				else{
+					var profiles = $('.articles');
+
+					profiles.hide()
+					profiles.each(function(i, el) {
+						if($(el).attr('data-nakshatra') == key) {
+							$(el).show();
+						}
+					})
+
+				}
+
+			});
+			
+		});
+		
+	</script>
+</body>
+</html>
