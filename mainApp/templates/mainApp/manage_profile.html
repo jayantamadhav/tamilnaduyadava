@@ -78,7 +78,12 @@
 							<a class="navbar-link">
 								<strong>Hi, {{request.user.name}}</strong>
 								<figure class="image is-32x32">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% else %}
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% endif %}
+
 								</figure>
 							</a>
 
@@ -107,7 +112,11 @@
 					<form method="post" id="manage_pic" enctype="multipart/form-data">
 						{% csrf_token %}
 						<figure class="image is-256x256 is-inline-block" style="margin:auto;">
+							{% if profile_image %}
 							<img src="{{profile_image.file.url}}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
+							{% else %}
+							<img src="{% static 'img/default-avatar.png' %}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
+							{% endif %}
 						</figure>
 						<div class="file is-primary has-margin-top-20">
 							<label class="file-label">
@@ -147,6 +156,10 @@
 							<tr >
 								<th class="has-text-right">Email :</th>
 								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.email }}</span></td>
+							</tr>
+							<tr >
+								<th class="has-text-right">Username :</th>
+								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.username }}</span></td>
 							</tr>
 							<tr >
 								<th class="has-text-right">Name :</th>

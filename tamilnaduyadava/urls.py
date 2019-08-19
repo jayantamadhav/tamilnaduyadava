@@ -22,6 +22,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('report_builder/', include('report_builder.urls')),
     path('', include('mainApp.urls')),
     path('logout/', views.logout_view, name="logout"),
     path('register/', views.UserRegistration_view, name="register"),

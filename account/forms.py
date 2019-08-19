@@ -6,6 +6,23 @@ from captcha.fields import ReCaptchaField
 
 class RegistrationForm(UserCreationForm):
 	captcha = ReCaptchaField()
+	
+	def clean(self):
+		cleaned_data = super(RegistrationForm, self).clean()
+		username = cleaned_data.get('username').lower()
+		email = cleaned_data.get('email').lower()
+		if username and Account.objects.filter(username=username).exists():
+			self.add_error('username', 'A user with that username already exists.')
+		elif email and Account.objects.filter(email=email).exists():
+			self.add_error('email', 'A user with that email already exists.')
+		return cleaned_data
+	def clean_username(self):
+		username = self.cleaned_data['username'].lower()
+		return username
+	def clean_email(self):
+		email = self.cleaned_data['email'].lower()
+		return email
+	
 	class Meta:
 		model =  Account
 		fields = ('email', 'username', 'age', 'name', 'gender', 'phone', 'dob')

@@ -2,6 +2,7 @@ from django.contrib import admin
 from nested_admin import NestedStackedInline, NestedModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from account.models import Account, Profile, ProfileImage
+from account.forms import RegistrationForm
 import datetime
 # Register your models here.
 
@@ -9,11 +10,17 @@ class AccountAdmin(UserAdmin):
 	list_display = ('email', 'username', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by')
 	search_fields = ('email', 'username')
 	readonly_fields = ('date_joined', 'last_login', 'created_by', 'payment_status',)
-
+	
+	add_form = RegistrationForm
 	filter_horizontal = ()
 	list_filter = ()
-	fieldsets = ()	
-		
+	fieldsets = ()
+	add_fieldsets = (
+		(None, {'classes': ('wide',),
+		'fields': ('email', 'username', 'password1', 'password2', 'name', 'age', 'dob', 'gender', 'phone', 'captcha', 'is_active', 'is_admin', 'is_staff', 'is_superuser' ),
+		}),
+	)
+
 	def custom_group(self, obj):
 		return ','.join([g.name for g in obj.groups.all()])
 	def save_model(self, request, obj, form, change):
@@ -38,7 +45,6 @@ class ProfileAdmin(admin.ModelAdmin):
 	readonly_fields = ['caste',]
 	autocomplete_fields = ['user']
 	inlines = [ProfileImageInline]
-
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Profile, ProfileAdmin)

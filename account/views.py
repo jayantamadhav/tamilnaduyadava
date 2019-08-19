@@ -12,7 +12,7 @@ def UserRegistration_view(request):
 		form = RegistrationForm(request.POST)
 		if form.is_valid():
 			#form.save()
-			email 			= form.cleaned_data.get('email')
+			email 			= form.cleaned_data.get('email').lower()
 			raw_password 	= form.cleaned_data.get('password1')
 			username 		= form.cleaned_data.get('username')
 			dob 			= form.cleaned_data.get('dob')
@@ -49,12 +49,15 @@ def CreateProfile_view(request):
 		if form.is_valid():
 			profile = form.save(commit=False)
 			profile.user = request.user
-			profile.horoscope = request.FILES['horoscope']
+			filepath = request.FILES.get('horoscope', False)
+			if filepath:
+				profile.horoscope = request.FILES['horoscope']
 			profile.save()
-			p = Profile.objects.get(user=request.user)
-			a = ProfileImage.objects.create(profile = p,file= request.FILES['profile_image'])
-			a.save()
-			print('Profile saved')
+			filepath = request.FILES.get('profile_image', False)
+			if filepath:
+				p = Profile.objects.get(user=request.user)
+				a = ProfileImage.objects.create(profile = p,file= request.FILES['profile_image'])
+				a.save()
 			return redirect('feed')
 		else:
 			context['profile_form'] = form

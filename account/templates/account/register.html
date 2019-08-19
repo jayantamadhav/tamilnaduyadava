@@ -131,6 +131,10 @@
 				</div>
 				<div class="has-text-centered">
 					<div>{% render_field registration_form.captcha %}</div>
+					<label class="checkbox has-margin-top-30">
+						<input type="checkbox" required>
+						By registering you agree to the <a href="{% url 'privacy_policy_external'%}">Terms &amp; Conditions</a> and <a href="{% url 'privacy_policy_external'%}">Privacy Policy</a>
+					</label>
 					<div class="has-text-centered has-margin-top-20">
 						<button type="submit" class="button is-large is-primary">Register</button>
 					</div>

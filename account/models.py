@@ -5,17 +5,21 @@ import os
 import datetime
 
 class MyAccountManager(BaseUserManager):
+	use_in_migrations = True
+	def get_by_natural_key(self, email):
+		return self.get(email__iexact = email)
+
 	def create_user(self, email, username, age, name, gender, phone, password, dob):
 		user = self.model(
-					email = self.normalize_email(email),
-					username = username,
-					name = name,
-					gender = gender,
-					age = age,
-					dob = dob,
-					phone = phone,
-					password = password,
-					)
+			email = self.normalize_email(email),
+			username = username.lower(),
+			name = name,
+			gender = gender,
+			age = age,
+			dob = dob,
+			phone = phone,
+			password = password,
+		)
 		user.set_password(password)
 		user.save(using = self._db)
 		return user
@@ -152,7 +156,7 @@ class Profile(models.Model):
 		('Revathi','Revathi'),
 	]
 	#Personal Details
-	user 				= models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile') #done
+	user 				= models.ForeignKey(Account, on_delete=models.CASCADE, related_name='profile') #done
 	education 			= models.CharField(max_length=40, choices=education_choices, null=True, default=3) #done
 	degree 				= models.CharField(max_length=40, null=True) #done
 	occupation 			= models.CharField(max_length=30, null=True) #done
@@ -196,7 +200,7 @@ class Profile(models.Model):
 
 class ProfileImage(models.Model):
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-	file = models.ImageField(upload_to=get_image_path) #done
+	file = models.ImageField(upload_to=get_image_path, null=True, blank=True, default='static/img/deafult-avatar.png') #done
 
 	def __str__(self):
 		return self.profile.user.email

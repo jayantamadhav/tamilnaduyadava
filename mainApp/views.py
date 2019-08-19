@@ -14,7 +14,10 @@ import json
 def about_us(request):
 	context = {}
 	profile = Profile.objects.get(user=request.user)
-	profile_image = ProfileImage.objects.get(profile=profile)
+	try:
+		profile_image = ProfileImage.objects.get(profile=profile)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
 	context = {
 		'profile_image' : profile_image,
 	}
@@ -30,6 +33,9 @@ def privacy_policy(request):
 	}
 	return render(request, 'mainApp/privacy_policy.html', context)
 
+def privacy_policy_external(request):
+	return render(request, 'mainApp/privacy_policy_external.html', {})
+
 def home(request):
 	user = request.user
 	if request.user.is_superuser:
@@ -41,7 +47,11 @@ def home(request):
 			return redirect('createProfile')
 	else:
 		if request.POST:
-			email = request.POST['email']
+			userinput = request.POST['email'].lower()
+			try:
+				email = Account.objects.get(username=userinput).email
+			except Account.DoesNotExist:
+				email = request.POST['email'].lower()
 			password = request.POST['password']
 			user = authenticate(email = email, password = password)
 			if user:
@@ -58,7 +68,10 @@ def home(request):
 def feed(request):
 	context = {}
 	profile = Profile.objects.get(user=request.user)
-	profile_image = ProfileImage.objects.get(profile=profile)
+	try:
+		profile_image = ProfileImage.objects.get(profile=profile)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
 	if profile.user.gender == 'M':
 		get_profiles = Profile.objects.filter(user__gender = 'F')
 		latest_profiles = get_profiles.order_by('-user__date_joined')[:3]
@@ -84,7 +97,10 @@ def feed(request):
 def sort_by(request, key, value):
 	context = {}
 	profile = Profile.objects.get(user=request.user)
-	profile_image = ProfileImage.objects.get(profile=profile)
+	try:
+		profile_image = ProfileImage.objects.get(profile=profile)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
 	if profile.user.gender == 'M' :
 		if key == 'rasi':
 			get_profiles = Profile.objects.filter(user__gender = 'F', rasi = value)
@@ -117,17 +133,24 @@ def manage_profile(request):
 	context = {}
 	if request.POST:
 		user = Profile.objects.get(user__email = request.user)
-		profile = ProfileImage.objects.get(profile = user)
-		if bool(request.FILES.get('profile_image', False)) == True:
-			profile.file = request.FILES['profile_image']
+		try:
+			profile = ProfileImage.objects.get(profile = user)
+			if bool(request.FILES.get('profile_image', False)) == True:
+				profile.file = request.FILES['profile_image']
+				profile.save()
+		except ProfileImage.DoesNotExist:
+			profile = ProfileImage.objects.create(profile=user, file=request.FILES['profile_image'])
 			profile.save()
 		if bool(request.FILES.get('horoscope', False)) == True:
 			user.horoscope = request.FILES['horoscope']
 			user.save()
 		return redirect('manage_profile')
-
+	
 	profile = Profile.objects.get(user=request.user)
-	profile_image = ProfileImage.objects.get(profile=profile)
+	try:
+		profile_image = ProfileImage.objects.get(profile=profile)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
 	context = {
 		'profile' : profile,
 		'profile_image' : profile_image,
@@ -186,8 +209,14 @@ def deactivate_user(request):
 
 def view_profile(request, id):
 	view_profile = Profile.objects.get(user__id = id)
-	view_profile_image = ProfileImage.objects.get(profile=view_profile)
-	profile_image = ProfileImage.objects.get(profile__user=request.user)
+	try:
+		view_profile_image = ProfileImage.objects.get(profile=view_profile)
+	except ProfileImage.DoesNotExist:
+		view_profile_image = ''
+	try:
+		profile_image = ProfileImage.objects.get(profile__user=request.user)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
 	context = {
 		'view_profile' : view_profile,
 		'view_profile_image' : view_profile_image,

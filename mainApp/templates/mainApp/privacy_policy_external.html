@@ -1,0 +1,104 @@
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Privacy Policy</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+	<Style>
+	.popup-overlay {
+		visibility:hidden;
+	}
+
+	.popup-content {
+		visibility:hidden;
+	}
+	.popup-overlay.active{
+		visibility:visible;
+	}
+
+	.popup-content.active {
+		visibility:visible;
+	}
+	.edit:hover{
+		color: blue;
+		cursor: pointer;
+	}
+</Style>
+</head>
+<body style="background:none">
+	<p class="has-text-centered is-size-1">TamilnaduYada</p>
+	<!--Main Content-->
+	<div class="container is-block has-background-white has-margin-top-40 has-padding-30" style="box-shadow: 2px 2px 5px;">
+		<p class="is-size-3 is-size-4-mobile has-text-centered">Privacy Policy</p>
+		<p class="has-margin-top-40">
+			We at Tamilnaduyadava.com respect your privacy and is the most important thing for us. Our privacy policy explains about how we collect, Process, use and share the information about you.
+		</p><br> 
+		<p>
+			Tamilnaduyadava.com is an online platform to enable tamilnadu Yadava community to register and search matching profiles across the community. We display the information you enter while registering and help you find the suitable profile as your life partner. By accepting to our privacy policy you consent Tamilnaduyadava.com to collect, process and share your personal information to provide the best service.
+		</p><br> 
+		<p>You assure to provide the most ethical and trustworthy information about you.</p><br> 
+		<p>Tamilnaduyadava.com does not encourage any fake or wrong information by the users.</p><br> 
+		<p>Tamilnaduyadava.com is not responsible for any wrong/Fake information published by any users.</p><br> 
+		<p>
+			We use a third party secure payment gateway for credit card, Debit card, NetBanking or other mode of  transactions to protect the credit card information of our users and Cookies are used to store the login information. 
+		</p><br>
+		<p>
+			We collect user activity data across the website not limited to device used, Browser used, OS version, logged in time, logged out time, preferences, profiles you visited, clicks and searches done by the user.
+		</p><br>
+		<p>We ask for SMS received and email link received from TamilnaduYadava.com for authentication and verification.</p><br>
+		<p>We use your data for analysis and research for further service enhancement.</p><br>
+		<p>By using Tamilnaduyadava.com, You agree to display your profile to other registered users in the community.</p><br> 	
+		<p>
+			We use third party service providers for website and application development, hosting, maintenance, backup, storage, payment processing and other relevant services for us which may require them to access your data and use for enabling our services provided to you. We also ensure they use your data under our vision adhering to our privacy policy and terms &amp; conditions.
+		</p><br>
+		<p>
+			Upon any discretion or law acts, we are entitled to disclose your personal identifiable information to the judicial proceeding, court order or any other Indian legal orders.
+		</p><br> 
+		<p>
+			We store your information at our database and display to other profiles registered with us. Even after deleting your profile, we store your data for future reference and eliminate any duplicate profile creation. If you wish to delete your information permanently, please email to <strong>admin@tamilnaduyadava.com</strong>
+		</p><br>
+		<p>
+			We or our registered third party service providers store your cookie information and other web details for enhanced service. We do not control the use of cookies by third parties.
+		</p><br>
+		<p>If you do not agree for use of your information, please do not use or access this website</p><br>
+		<p class="has-text-centered is-size-3 is-size-4-mobile has-margin-top-40 has-margin-bottom-40">Change of Privacy Policy</p>
+		<p>
+			We may change this Privacy Policy without notice from time to time without any notice to you. However, changes will be updated in the Privacy Policy page
+		</p><br>
+
+		<p class="has-text-centered is-size-3 is-size-4-mobile has-margin-top-40 has-margin-bottom-40">Grievance addresser<p>
+		<p><strong>Email</strong>: admin@tamilnaduyadava.com</p>
+		<p><strong>Sub</strong>: Grievance addressed</p><br>
+		<p>
+			The Grievance officer shall be available between 10 am to 6 pm IST from Monday to Friday excluding Saturday’s, Sunday's and Public Holidays in India.
+		</p><br>
+		<p>
+			The Grievance officer is appointed as per Section 5 (9) of the Information Technology (Reasonable Security & Procedures and Sensitive Personal data or Information) Rule, 2011.
+		</p><br>
+
+
+
+	</div>
+
+	<!--Footer-->
+	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20">
+		<div class="container has-text-centered has-text-white">
+			<p class="is-size-5">TamilnaduYadava</p>
+			<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+			<p class="is-size-7 has-text-light">Developed by JM</p>
+		</div>
+	</section>
+</body>
+</html>

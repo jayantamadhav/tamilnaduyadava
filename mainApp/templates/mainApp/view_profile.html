@@ -80,7 +80,12 @@
 							<a class="navbar-link">
 								<strong>Hi, {{request.user.name}}</strong>
 								<figure class="image is-32x32">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% else %}
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% endif %}
+
 								</figure>
 							</a>
 
@@ -105,10 +110,14 @@
 		<div class="columns has-margin-top-30">
 			<div class="column is-4 has-text-centered">
 				<figure class="view_image image is-256x256 is-inline-block">
+					{% if view_profile_image %}
 					<img src="{{view_profile_image.file.url}}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
-				</figure>
+					{% else %}
+					<img src="{% static 'img/default-avatar.png' %}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
+					{% endif %}
+				</figure> 
 				<div class="has-margin-top-50">
-					{% if view_profile.horoscope.url %}
+					{% if view_profile.horoscope %}
 					<a href="{{view_profile.horoscope.url}}" target="_blank">
 						<button class="button is-primary">View Horoscope</button>
 					</a>

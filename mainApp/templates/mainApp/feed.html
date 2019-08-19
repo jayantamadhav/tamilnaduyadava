@@ -59,7 +59,12 @@
 							<a class="navbar-link">
 								<strong>Hi, {{request.user.name}}</strong>
 								<figure class="image is-32x32">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% else %}
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% endif %}
+
 								</figure>
 							</a>
 
@@ -89,7 +94,11 @@
 						<div class="media">
 							<div class="media-left">
 								<figure class="image is-64x64">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+									{% else %}
+										<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
+									{% endif %}
 								</figure>
 							</div>
 							<div class="media-content">
@@ -194,6 +203,7 @@
 								</div>
 							</div>
 						</div>
+						<div class="button is-danger is-small has-margin-5" style="border-radius: 10px"><a href="{% url 'feed' %}" class=" has-text-white">Reset Filters</a></div>
 					</div>
 				</div>
 
@@ -205,11 +215,15 @@
 					<article class="articles media has-border-top-1 has-padding-10" data-age={{sp.user.age}} data-name={{sp.user.name}} data-rasi={{sp.rasi}} data-nakshatra={{sp.nakshatra}}>
 						<figure class="media-left">
 							<figure class="image is-128x128">
+								{% if sp.profileimage_set.all %}
 								{% for image in sp.profileimage_set.all %}
 								{% if forloop.first %}
-								<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
+									<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
 								{%endif%}	
 								{% endfor %}
+								{% else %}
+								<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:128px !important;height:128px !important;">
+								{% endif %}
 							</figure>
 						</figure>
 						<div class="media-content">
