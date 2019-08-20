@@ -7,7 +7,7 @@ import datetime
 # Register your models here.
 
 class AccountAdmin(UserAdmin):
-	list_display = ('email', 'username', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by')
+	list_display = ('email', 'username', 'gender', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by', 'is_active', 'reason')
 	search_fields = ('email', 'username')
 	readonly_fields = ('date_joined', 'last_login', 'created_by', 'payment_status',)
 	
@@ -30,8 +30,10 @@ class AccountAdmin(UserAdmin):
 			else:
 				obj.created_by = 'Admin'
 		if obj.age == None and obj.dob is not None:
+			get_age = str(obj.dob)
+			get_age = get_age[:4]
 			now = datetime.datetime.now()
-			obj.age = now.year - int(obj.dob[-4:])
+			obj.age = now.year - int(get_age)
 		super().save_model(request, obj, form, change)
 
 

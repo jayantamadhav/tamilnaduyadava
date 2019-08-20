@@ -73,10 +73,10 @@ def feed(request):
 	except ProfileImage.DoesNotExist:
 		profile_image = ''
 	if profile.user.gender == 'M':
-		get_profiles = Profile.objects.filter(user__gender = 'F')
+		get_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True)
 		latest_profiles = get_profiles.order_by('-user__date_joined')[:3]
 	else:
-		get_profiles = Profile.objects.filter(user__gender = 'M')
+		get_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True)
 		latest_profiles = get_profiles.order_by('-user__date_joined')[:3]
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
@@ -103,16 +103,16 @@ def sort_by(request, key, value):
 		profile_image = ''
 	if profile.user.gender == 'M' :
 		if key == 'rasi':
-			get_profiles = Profile.objects.filter(user__gender = 'F', rasi = value)
+			get_profiles = Profile.objects.filter(user__gender = 'F', rasi = value, user__is_active=True)
 		else:
-			get_profiles = Profile.objects.filter(user__gender = 'F', nakshatra = value)
-		latest_profiles = Profile.objects.filter(user__gender = 'F').order_by('-user__date_joined')[:3]
+			get_profiles = Profile.objects.filter(user__gender = 'F', nakshatra = value, user__is_active=True)
+		latest_profiles = Profile.objects.filter(user__gender = 'F', is_active=True).order_by('-user__date_joined')[:3]
 	else:
 		if key == 'rasi':
 			get_profiles = Profile.objects.filter(user__gender = 'M', rasi = value)
 		else:
-			get_profiles = Profile.objects.filter(user__gender = 'M', nakshatra = value)
-		latest_profiles = Profile.objects.filter(user__gender = 'F').order_by('-user__date_joined')[:3]
+			get_profiles = Profile.objects.filter(user__gender = 'M', nakshatra = value, user__is_active=True)
+		latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
 	try:

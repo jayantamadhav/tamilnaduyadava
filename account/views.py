@@ -22,9 +22,10 @@ def UserRegistration_view(request):
 			user = form.save(commit=False)
 			user.created_by = 'End User'
 			now = datetime.datetime.now()
-			user.age = now.year - int(dob[-4:])
+			get_age = str(dob)
+			get_age = get_age[:4]
+			user.age = now.year - int(get_age)
 			user.save()
-			print(now.year - int(dob[-4:]))
 
 			if user:
 				user = authenticate(username=email, password=raw_password)

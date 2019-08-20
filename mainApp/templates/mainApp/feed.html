@@ -97,7 +97,7 @@
 									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
 									{% else %}
-										<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
 									{% endif %}
 								</figure>
 							</div>
@@ -218,7 +218,7 @@
 								{% if sp.profileimage_set.all %}
 								{% for image in sp.profileimage_set.all %}
 								{% if forloop.first %}
-									<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
+								<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
 								{%endif%}	
 								{% endfor %}
 								{% else %}
@@ -284,9 +284,15 @@
 							<div class="media">
 								<div class="media-left">
 									<figure class="image is-64x64">
-										{% for image in profile.profileimage_set.all %}
+										{% if sp.profileimage_set.all %}
+										{% for image in sp.profileimage_set.all %}
+										{% if forloop.first %}
 										<img src="{{image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+										{%endif%}	
 										{% endfor %}
+										{% else %}
+										<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
+										{% endif %}
 									</figure>
 								</div>
 								<div class="media-content">

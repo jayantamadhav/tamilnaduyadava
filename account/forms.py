@@ -6,7 +6,7 @@ from captcha.fields import ReCaptchaField
 
 class RegistrationForm(UserCreationForm):
 	captcha = ReCaptchaField()
-	
+	dob = forms.DateField(input_formats=['%d/%m/%Y'])
 	def clean(self):
 		cleaned_data = super(RegistrationForm, self).clean()
 		username = cleaned_data.get('username').lower()

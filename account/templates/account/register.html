@@ -13,7 +13,9 @@
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </head>
 <body>
@@ -26,7 +28,7 @@
 				<strong>Let's set up your account,<br>
 				while we find Matches for you!</strong>
 			</p>
-			<form class="has-margin-top-10" method="post" novalidate>
+			<form class="has-margin-top-10" method="post" autocomplete="off" >
 				{% csrf_token %}
 
 				{% if form.non_field_errors %}
@@ -55,6 +57,31 @@
 					{% if registration_form.username.errors %}
 					<p class="help is-danger">{{ registration_form.username.errors }}</p>
 					{% endif %}
+				</div>
+
+				<div class="columns">
+					<div class="column">
+						<div class="field">
+							<label class="label">Create Password</label>
+							<div class="control">
+								{% render_field registration_form.password1 type="password" class="input" placeholder="Create password" %}
+							</div>
+							{% if registration_form.password1.errors %}
+							<p class="help is-danger">{{ registration_form.password1.errors }}</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="column">
+						<div class="field">
+							<label class="label">Confirm Password</label>
+							<div class="control">
+								{% render_field registration_form.password2 type="password" class="input" placeholder="Confirm password" %}
+							</div>
+							{% if registration_form.password2.errors %}
+							<p class="help is-danger">{{ registration_form.password2.errors }}</p>
+							{% endif %}
+						</div>
+					</div>
 				</div>
 
 				<div class="field">
@@ -97,7 +124,7 @@
 						<div class="field">
 							<label class="label">D.O.B</label>
 							<div class="control">
-								{% render_field registration_form.dob type="text" class="input" placeholder="DD/MM/YYYY"%}
+								{% render_field registration_form.dob id="datepicker" class="input" autocomplete="anyrandominvalidvalue" type="text" name="date" placeholder="Pick a Date" %}
 							</div>
 							{% if registration_form.dob.errors %}
 							<p class="help is-danger">{{ registration_form.dob.errors }}</p>
@@ -105,32 +132,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="columns">
-					<div class="column">
-						<div class="field">
-							<label class="label">Create Password</label>
-							<div class="control">
-								{% render_field registration_form.password1 type="password" class="input" placeholder="Create password" %}
-							</div>
-							{% if registration_form.password1.errors %}
-							<p class="help is-danger">{{ registration_form.password1.errors }}</p>
-							{% endif %}
-						</div>
-					</div>
-					<div class="column">
-						<div class="field">
-							<label class="label">Confirm Password</label>
-							<div class="control">
-								{% render_field registration_form.password2 type="password" class="input" placeholder="Confirm password" %}
-							</div>
-							{% if registration_form.password2.errors %}
-							<p class="help is-danger">{{ registration_form.password2.errors }}</p>
-							{% endif %}
-						</div>
-					</div>
-				</div>
 				<div class="has-text-centered">
-					<div>{% render_field registration_form.captcha %}</div>
+					<div>{% render_field registration_form.captcha id="g_recaptcha_response" %}<p id="captcha-error"></p></div>
+					{% if registration_form.captcha %}
+					<p class="help is-danger">{{ registration_form.captcha.errors }}</p>
+					{% endif %}
 					<label class="checkbox has-margin-top-30">
 						<input type="checkbox" required>
 						By registering you agree to the <a href="{% url 'privacy_policy_external'%}">Terms &amp; Conditions</a> and <a href="{% url 'privacy_policy_external'%}">Privacy Policy</a>
@@ -143,9 +149,28 @@
 		</div>
 	</div>
 	<script>
-		$('.numbers').keypress(function(key) {
-			if(key.charCode < 48 || key.charCode > 57) return false;
-			if($(this).val().length > 9) return false;
+		$(document).ready(function(){
+			function validateForm(){
+				var googleResponse = jQuery('#g_recaptcha_response').val();
+				if (!googleResponse) {
+					$('<p style="color:red !important" class=error-captcha"><span class="glyphicon glyphicon-remove " ></span> Please fill up the captcha.</p>" ').insertAfter("#captcha-error");
+					return false;
+				} else {            
+					return true;
+				}
+			};
+			$(function () {
+				var currentYear = (new Date).getFullYear();
+				var end_date = "01/01/"+ (currentYear-10).toString();
+				$("#datepicker").datepicker({
+					endDate: end_date,
+					format: "dd/mm/yyyy",
+				});
+			});
+			$('.numbers').keypress(function(key) {
+				if(key.charCode < 48 || key.charCode > 57) return false;
+				if($(this).val().length > 9) return false;
+			});
 		});
 	</script>
 </body>

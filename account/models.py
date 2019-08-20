@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db.models.signals import post_save
 import os
@@ -50,7 +51,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 	name 			= models.CharField(verbose_name='name', max_length=50)
 	age 			= models.PositiveIntegerField(verbose_name="Age", null=True, blank=True)
 	gender			= models.CharField(verbose_name='gender', max_length=1, choices=gender_choices)
-	phone			= models.CharField(verbose_name="phone number", max_length=10)
+	phone			= models.PositiveIntegerField(verbose_name="phone number", unique=True)
 	username 		= models.CharField(max_length=30, unique=True)
 	dob				= models.CharField(verbose_name="D.O.B", max_length=10, null=True)
 
@@ -75,6 +76,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 	def has_module_perms(self, app_label):
 		return True
+
+	def clean(self):
+		if len(str(self.phone)) > 10:
+			raise ValidationError('Phone number invalid')
 
 def get_image_path(instance, filename):
 	return os.path.join('users', str(instance.profile.user.id), filename)
