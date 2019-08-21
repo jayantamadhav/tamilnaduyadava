@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from account.models import Profile, ProfileImage, Account
 from account.forms import ProfileCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 import json
 # Create your views here.
 
@@ -225,4 +227,33 @@ def view_profile(request, id):
 	}
 	return render(request, 'mainApp/view_profile.html', context)
 
+def change_password(request):
+	view_profile = Profile.objects.get(user=request.user)
+	try:
+		profile_image = ProfileImage.objects.get(profile=view_profile)
+	except ProfileImage.DoesNotExist:
+		profile_image = ''
+	context = {}
+	if request.method == 'POST':
+		form = PasswordChangeForm(request.user, request.POST)
+		if request.POST['old_password'] == request.POST['new_password1']:
+			messages.error(request, 'Old password and new password cannot be same', extra_tags="notification is-danger")
+		elif form.is_valid():
+			user = form.save()
+			update_session_auth_hash(request, user)  # Important!
+			messages.success(request, 'Your password was successfully updated!', extra_tags="notification is-success")
+			context = {
+				'form' : form,
+				'profile_image' : profile_image,
+			}
+			return render(request, 'mainApp/change_password.html', context)
+		else:
+			messages.error(request, 'Please correct the error below.', extra_tags="notification is-danger")
+	else:
+		form = PasswordChangeForm(request.user)
+	context = {
+		'form' : form,
+		'profile_image' : profile_image,
+	}
+	return render(request, 'mainApp/change_password.html', context)
 

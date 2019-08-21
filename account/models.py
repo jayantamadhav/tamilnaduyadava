@@ -51,7 +51,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 	name 			= models.CharField(verbose_name='name', max_length=50)
 	age 			= models.PositiveIntegerField(verbose_name="Age", null=True, blank=True)
 	gender			= models.CharField(verbose_name='gender', max_length=1, choices=gender_choices)
-	phone			= models.PositiveIntegerField(verbose_name="phone number", unique=True)
+	phone			= models.PositiveIntegerField(verbose_name="phone number", unique=True, null=True)
 	username 		= models.CharField(max_length=30, unique=True)
 	dob				= models.CharField(verbose_name="D.O.B", max_length=10, null=True)
 

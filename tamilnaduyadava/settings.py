@@ -21,9 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+kmn08!khm7vo9weo(z0rspq!=1o7(84##p$x-_fv^kzpu74+y'
-
-RECAPTCHA_PUBLIC_KEY = '6LcSS7MUAAAAAPnxXgJhN89pVwZnGqYfoqya9dyo'
-RECAPTCHA_PRIVATE_KEY = '6LcSS7MUAAAAAHYJ0w2uqATIblYOCmWYxLytqUi9'
+'''
+RECAPTCHA_PUBLIC_KEY = '6LdgTbMUAAAAAEV1wCqKJPmKI3cqTzFdO6XkvqX_'
+RECAPTCHA_PRIVATE_KEY = '6LdgTbMUAAAAAKA3R4C7MvJOags7JtzjKPqaFC1X'
+'''
+RECAPTCHA_PUBLIC_KEY='6LcSS7MUAAAAAPnxXgJhN89pVwZnGqYfoqya9dyo'
+RECAPTCHA_PRIVATE_KEY='6LcSS7MUAAAAAHYJ0w2uqATIblYOCmWYxLytqUi9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

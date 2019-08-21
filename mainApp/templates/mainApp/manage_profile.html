@@ -151,8 +151,9 @@
 				</div>
 				<div class="column">
 					<div class="container">
-						<table class="table is-fullwidth is-completely-borderless">
+						<table class="table is-fullwidth is-completely-borderless is-clearfix">
 							<th class="is-size-5 is-block has-background-primary has-text-light has-padding-10">Account Details</th>
+							<td><a href="{% url 'change_password' %}"><button class="button is-pulled-right is-outlined is-primary">Change Password</button></a></td>
 							<tr >
 								<th class="has-text-right">Email :</th>
 								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.email }}</span></td>

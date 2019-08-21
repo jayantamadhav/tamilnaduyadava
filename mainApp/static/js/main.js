@@ -50,11 +50,11 @@ $(document).ready(function() {
 		var new_data = '';
 		if(
 			field == "name" 				|| field == "dob" 			|| field == "occupation" ||
-			field == "religion"  			|| field == "caste" 		||field == "height" || 
+			field == "religion"  			|| field == "caste" 		|| field == "mother_prof" ||
 			field == "physical_disability" 	|| field == "complexion" 	|| field == "phone1" ||
 			field == "city" 				|| field == "state" 		|| field == "native_city" || 
 			field == "native_state" 		|| field == "father_name" 	|| field == "father_prof" || 
-			field == "mother_name" 			|| field == "mother_prof" 	|| field == "weight" 
+			field == "mother_name"
 			)
 		{
 			var html = '<input type="text" class="input" id="new-data" placeholder="Enter new details">';
@@ -62,6 +62,10 @@ $(document).ready(function() {
 		}
 		else if(field == "salary" || field == "phone2"){
 			var html = '<input type="number" class="input numbers" id="new-data" placeholder="Enter only the numbers..">';
+			$('#modal-control').html(html);
+		}
+		else if(field == "height" || field == "weight"){
+			var html = '<input type="number" class="input height-weight" id="new-data" placeholder="Enter only the numbers..">';
 			$('#modal-control').html(html);
 		}
 		else if(field == "education"){
@@ -121,6 +125,10 @@ $(document).ready(function() {
 	$(document).on('keypress', '.numbers', function(key) {
 		if(key.charCode < 48 || key.charCode > 57) return false;
 		if($(this).val().length > 9) return false;
+	});
+	$(document).on('keypress', '.height-weight', function(key) {
+		if(key.charCode < 48 || key.charCode > 57) return false;
+		if($(this).val().length > 2) return false;
 	});
 
 });

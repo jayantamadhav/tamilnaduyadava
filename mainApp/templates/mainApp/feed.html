@@ -209,7 +209,6 @@
 
 				<!--PROFILES-->
 				<div class="profiles container has-margin-top-10 is-block has-background-white has-padding-10">
-					<a href="{% url 'sort_by' key='rasi' value='Mesham' %}">Mesham </a>
 					<p class="is-size-4 has-text-grey has-padding-10">Profiles</p>
 					{% for sp in show_profiles %}
 					<article class="articles media has-border-top-1 has-padding-10" data-age={{sp.user.age}} data-name={{sp.user.name}} data-rasi={{sp.rasi}} data-nakshatra={{sp.nakshatra}}>
