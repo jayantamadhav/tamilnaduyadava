@@ -70,13 +70,11 @@ def phone_verify(request):
 			new_otp = ""
 			for i in range(6):
 				new_otp += str(random.randint(0,9))
-			#send_sms(phone, new_otp)
+			send_sms(phone, new_otp)
 			otp = new_otp
-			print('new generate : ', otp)
 			return HttpResponse('success')
 		else:
-			print(otp)
-			#send_sms(phone, otp)
+			send_sms(phone, otp)
 			return HttpResponse('success')
 	context = {
 		'phone' : phone,
@@ -95,8 +93,7 @@ def UserRegistration_view(request):
 			otp = ""
 			for i in range(6):
 				otp += str(random.randint(0,9))
-			print(otp)
-			#send_sms(phone, otp)
+			send_sms(phone, otp)
 			request.session['generated_otp'] = otp
 			return redirect('phone_verify')
 		else:
