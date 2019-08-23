@@ -90,6 +90,7 @@
 							</a>
 
 							<div class="navbar-dropdown">
+								<span class="is-size-7 has-text-light navbar-item is-block has-background-dark" >{{request.user.m_id}}</span>
 								<a class="navbar-item" href="{% url 'manage_profile' %}">
 									Manage Profile
 								</a>
@@ -139,6 +140,7 @@
 			</div>
 			<div class="column has-padding-30">
 				<p class="is-size-2" style="color: #F60;">{{ view_profile.user.name}} <span class="is-size-6 has-text-primary has-margin-left-30"><i class="fa fa-map-marker"></i> {{ view_profile.city }}</span></p>
+				<span class="tag is-dark">{{view_profile.user.m_id}}</span><br><br>
 				<p> {{ view_profile.user.age }} yrs, {{ view_profile.height }} cm, {{view_profile.weight}} kg, <strong>{{ view_profile.marital_status }}</strong></p><br>
 
 				<p> <Strong>D.O.B</Strong>  : {{ view_profile.user.dob }}</p><br>

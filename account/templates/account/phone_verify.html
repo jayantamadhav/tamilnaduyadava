@@ -1,0 +1,149 @@
+{% load widget_tweaks %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>TamilnaduYadava | Password Reset Sent</title>
+
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+	<div class="section" style="min-height:100vh">
+		<div class="has-text-centered">
+			<p class="is-size-1 is-size-3-mobile"><a href="{% url 'home' %}" class=" has-text-white">TamilnaduYadava</a></p>
+		</div>
+		<div class="container is-block has-background-white has-margin-top-60 has-padding-30" style="margin:auto; max-width:500px;border-radius: 5px;box-shadow: 5px 5px  25px #000">
+			<a href="{% url 'register' %}" class="is-size-5"><i class="fa fa-chevron-circle-left"></i> Back</a>
+			<p class="is-size-3">Phone Verification</p><br>
+			<p class="is-size-6">
+				We need to verify your phone number before registration<br><br>
+				We have sent the verification code to {{phone}}<br>
+				Please enter the OTP<br>
+			</p>
+			<p class="has-text-right">
+				<a href="#"><button id="generate_new" class="button is-small is-outlined is-primary">Generate new OTP</button></a>
+				<a href="#"><button id="resend" class="button is-small is-primary">Resend OTP</button></a>
+			</p>
+			{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+				<li class="{{ message.tags }}">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			<form class="has-margin-top-20 is-clearfix" method="post" autocomplete="off">
+				{% csrf_token %}
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half is-full-mobile">
+						<div class="field">
+							<div class="control" >
+								<input id="otp-input" name="otp" class="input" autofocus placeholder="OTP" style="font-size: 2em">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="columns is-mobile is-centered">
+					<div class="column is-half has-text-centered">
+						<button type="submit" class="has-text-centered is-large is-small-mobile button is-outlined is-primary has-margin-top-20">Verify</button>
+					</div>
+				</div>
+			</form>
+			{% if verified %}
+			<script>
+				setTimeout('location.href = "{% url 'register' %}";', 3000);
+			</script>
+			{% endif %}
+		</div>
+	</div>
+	<script>
+		$(document).ready(function(){
+			$('#otp-input').keypress(function(key) {
+				if(key.charCode < 48 || key.charCode > 57) return false;
+				if($(this).val().length > 5) return false;
+			});
+			$("#generate_new").prop('disabled',true);
+			var secondsBeforeExpire = 60;
+			var timer = setInterval(function(){
+				if(secondsBeforeExpire == 0){
+					$("#generate_new").text('Generate new OTP');
+					$("#generate_new").prop('disabled',false);
+				}
+				else{
+					secondsBeforeExpire--;
+					var new_text = 'Generate new OTP(00:' + secondsBeforeExpire%1000 + ')';
+					$("#generate_new").text(new_text);
+				}
+			},1000);
+			$('#generate_new').on('click', function(){
+				$.ajax(
+				{
+					type: "GET",
+					async: "true",
+					cache:"false",
+					url: 'phone_verify',
+					data: {
+						'type' : 'generate_new'
+					},
+					success: function(data){
+						$("#generate_new").prop('disabled',true);
+						var secondsBeforeExpire = 60;
+						var timer = setInterval(function(){
+							if(secondsBeforeExpire == 0){
+								$("#generate_new").text('Generate new OTP');
+								$("#generate_new").prop('disabled',false);
+							}
+							else{
+								secondsBeforeExpire--;
+								var new_text = 'Generate new OTP(00:' + secondsBeforeExpire%1000 + ')';
+								$("#generate_new").text(new_text);
+							}
+						},1000);
+					},
+					error:function(data){
+						alert("Nope");
+					}
+				})
+			});
+			$('#resend').on('click', function(){
+				$.ajax(
+				{
+					type: "GET",
+					async: "true",
+					cache:"false",
+					url: 'phone_verify',
+					data: {
+						'type' : 'resend'
+					},
+					success: function(data){
+						$("#resend").prop('disabled',true);
+						var secondsBeforeExpire = 15;
+						var timer = setInterval(function(){
+							if(secondsBeforeExpire == 0){
+								$("#resend").text('Resend OTP');
+								$("#resend").prop('disabled',false);
+							}
+							else{
+								secondsBeforeExpire--;
+								var new_text = 'Resend OTP(00:' + secondsBeforeExpire%1000 + ')';
+								$("#resend").text(new_text);
+							}
+						},1000);
+					},
+					error:function(data){
+						alert("Nope");
+					}
+				})
+			});
+		});
+	</script>
+</body>
+</html>

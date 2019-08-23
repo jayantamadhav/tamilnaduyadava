@@ -28,7 +28,7 @@
 				<strong>Let's set up your account,<br>
 				while we find Matches for you!</strong>
 			</p>
-			<form class="has-margin-top-10" method="post" autocomplete="off" >
+			<form class="has-margin-top-10" id="register-form" method="post" autocomplete="off" >
 				{% csrf_token %}
 
 				{% if form.non_field_errors %}
@@ -142,23 +142,46 @@
 						By registering you agree to the <a href="{% url 'privacy_policy_external'%}">Terms &amp; Conditions</a> and <a href="{% url 'privacy_policy_external'%}">Privacy Policy</a>
 					</label>
 					<div class="has-text-centered has-margin-top-20">
-						<button type="submit" class="button is-large is-primary">Register</button>
+						<button type="submit" class="button is-large is-primary">Proceed</button>
 					</div>
 				</div>
 			</form>
 		</div>
+		<div class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<!-- Any other Bulma elements you want -->
+				<div class="container is-block has-background-white has-padding-20 has-margin-5" style="border-radius: 5px">
+					<p class="is-size-4"><Strong>Profile is Minor</Strong></p><br>
+					<div class="control" id="modal-control">
+						<p class="minor-error"></p>
+					</div>
+					<div class="has-text-right has-margin-top-30">
+						<button class="button is-outlined is-danger" id="close">Back</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
 		$(document).ready(function(){
-			function validateForm(){
-				var googleResponse = jQuery('#g_recaptcha_response').val();
-				if (!googleResponse) {
-					$('<p style="color:red !important" class=error-captcha"><span class="glyphicon glyphicon-remove " ></span> Please fill up the captcha.</p>" ').insertAfter("#captcha-error");
-					return false;
-				} else {            
-					return true;
+			$('#register-form').submit(function(event){
+				var gender = $('#id_gender').val();
+				var year = $('#datepicker').val();
+				var age = (new Date).getFullYear() - parseInt(year.substr(year.length - 4));
+				if (gender == 'M' && age < 21){
+					$('.modal').addClass('is-active');
+					$('.minor-error').html('Men below age 18 are considered minor and are not allowed to create profile.');
 				}
-			};
+				else if(gender == 'F' && age < 18){
+					$('.modal').addClass('is-active');
+					$('.minor-error').html('Ladies below age 21 are considered minor and are not allowed to create profile');
+				}
+				else{
+					$(this).submit();
+				}
+				event.preventDefault();
+			});
 			$(function () {
 				var currentYear = (new Date).getFullYear();
 				var end_date = "01/01/"+ (currentYear-10).toString();

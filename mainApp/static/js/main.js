@@ -51,10 +51,9 @@ $(document).ready(function() {
 		if(
 			field == "name" 				|| field == "dob" 			|| field == "occupation" ||
 			field == "religion"  			|| field == "caste" 		|| field == "mother_prof" ||
-			field == "physical_disability" 	|| field == "complexion" 	|| field == "phone1" ||
+			field == "physical_disability" 	|| field == "phone1" 		|| field == "mother_name" ||
 			field == "city" 				|| field == "state" 		|| field == "native_city" || 
-			field == "native_state" 		|| field == "father_name" 	|| field == "father_prof" || 
-			field == "mother_name"
+			field == "native_state" 		|| field == "father_name" 	|| field == "father_prof" 
 			)
 		{
 			var html = '<input type="text" class="input" id="new-data" placeholder="Enter new details">';
@@ -70,6 +69,10 @@ $(document).ready(function() {
 		}
 		else if(field == "education"){
 			var html = '<div class="select"><select  id="new-data"><option>Secondary</option><option>Higher Secondary</option><option>Under Graduate</option><option>Post Graduate</option><option>Ph.D</option><option>Self Taught</option></select></div>';
+			$('#modal-control').html(html);
+		}
+		else if(field == "complexion"){
+			var html = '<div class="select"><select  id="new-data"><option>Very Fair</option><option>Fair</option><option>Wheatish Brown</option><option>Dark</option></select></div>';
 			$('#modal-control').html(html);
 		}
 		else if(field == "rasi"){

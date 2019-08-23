@@ -13,8 +13,11 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/bulmahelper.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bulma-switch.min.css' %}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 
 </head>
@@ -59,11 +62,17 @@
 							<a class="navbar-link">
 								<strong>Hi, {{request.user.name}}</strong>
 								<figure class="image is-32x32">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% else %}
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:32px !important;height:32px !important;margin-left:5px">
+									{% endif %}
+
 								</figure>
 							</a>
 
 							<div class="navbar-dropdown">
+								<span class="is-size-7 has-text-light navbar-item is-block has-background-dark" >{{profile.user.m_id}}</span>
 								<a class="navbar-item" href="{% url 'manage_profile' %}">
 									Manage Profile
 								</a>
@@ -89,11 +98,15 @@
 						<div class="media">
 							<div class="media-left">
 								<figure class="image is-64x64">
+									{% if profile_image %}
 									<img src="{{profile_image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+									{% else %}
+									<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
+									{% endif %}
 								</figure>
 							</div>
 							<div class="media-content">
-								<p class="title is-4">{{ request.user.name }}</p>
+								<p class="title is-4">{{ request.user.name }}<br><span class="tag is-dark">{{request.user.m_id}}</span></p>
 								<p class="subtitle is-6"><a href="{% url 'manage_profile' %}">Edit profile</a></p>
 							</div>
 						</div>
@@ -104,7 +117,106 @@
 							</span>
 						</div>
 					</div>
-				</div>	
+				</div>
+				{% if preference %}
+				<nav class="panel has-margin-top-10">
+					<p class="panel-heading is-clearfix is-block has-text-white has-background-dark">
+						Preferences
+						<label class="switch is-pulled-right">
+							<input id="preference" type="checkbox" data-exist=true>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_age">
+						Age
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from="{{preference.age}}" />
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_height">
+						Height
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="height-range-slider" name="my_range" value="" data-grid=true data-min="150" data-max="200" data-from="{{preference.height}}" />
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_education">
+						Education
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="education-range-slider" name="my_range" value="" data-prefered='{{preference.education}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_salary">
+						Salary
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="salary-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.salary}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
+						Complexion
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="complexion-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.complexion}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_marriedStatus">
+						Married Status
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="married-range-slider" name="my_range" value="" data-prefered='{{preference.married}}'/>
+						</div>
+					</p>
+					<p class="panel_child is-clearfix has-padding-20" style="border: 1px solid #dadada;">
+						<button class=" button is-outlined is-primary is-pulled-right" id="save-preference">Save Preferences</button>
+					</p>
+				</nav>
+				{% else %}
+				<nav class="panel has-margin-top-10">
+					<p class="panel-heading is-clearfix is-block has-text-white has-background-dark">
+						Preferences
+						<label class="switch is-pulled-right">
+							<input id="preference" type="checkbox" data-exist=false>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_age">
+						Age
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from='25' />
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_height">
+						Height
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="height-range-slider" name="my_range" value="" data-grid=true data-min="150" data-max="200" data-from="170" />
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_education">
+						Education
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="education-range-slider" name="my_range" value="" data-prefered='{{preference.education}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_salary">
+						Salary
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="salary-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.salary}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
+						Complexion
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="complexion-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.complexion}}'/>
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_marriedStatus">
+						Married Status
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<input type="text" class="married-range-slider" name="my_range" value="" data-prefered='{{preference.married}}'/>
+						</div>
+					</p>
+					<p class="panel_child is-clearfix has-padding-20" style="border: 1px solid #dadada;">
+						<button class=" button is-outlined is-primary is-pulled-right" id="save-preference">Save Preferences</button>
+					</p>
+				</nav>
+				{% endif %}
 			</div>
 
 
@@ -113,14 +225,14 @@
 				<div>
 					<div>
 						<p class="has-margin-left-10 has-margin-top-20 has-text-grey">Sort by</p>
-						<div class="select">
+						<div class="select sort-by">
 							<select data-attribute="age">
 								<option selected disabled>Age</option>
 								<option>Ascending</option>
 								<option>Descending</option>
 							</select>
 						</div>
-						<div class="select">
+						<div class="select sort-by">
 							<select data-attribute="name">
 								<option selected disabled>Name</option>
 								<option>Ascending</option>
@@ -201,16 +313,19 @@
 				<!--PROFILES-->
 				<div class="profiles container has-margin-top-10 is-block has-background-white has-padding-10">
 					<p class="is-size-4 has-text-grey has-padding-10">Profiles</p>
-					{% if show_profiles%}
 					{% for sp in show_profiles %}
 					<article class="articles media has-border-top-1 has-padding-10" data-age={{sp.user.age}} data-name={{sp.user.name}} data-rasi={{sp.rasi}} data-nakshatra={{sp.nakshatra}}>
 						<figure class="media-left">
 							<figure class="image is-128x128">
+								{% if sp.profileimage_set.all %}
 								{% for image in sp.profileimage_set.all %}
 								{% if forloop.first %}
 								<img src="{{image.file.url}}" class="is-rounded" style="width:128px !important;height:128px !important;">
 								{%endif%}	
 								{% endfor %}
+								{% else %}
+								<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:128px !important;height:128px !important;">
+								{% endif %}
 							</figure>
 						</figure>
 						<div class="media-content">
@@ -218,6 +333,7 @@
 								<p>
 									<strong>{{sp.user.name}}</strong> <small><a href="{% url 'view_profile' id=sp.user.id %}">View profile</a></small>
 									<br>
+									<span class="tag is-dark is-size-7">{{sp.user.m_id}}</span><br>
 									<span class="is-size-7 has-text-grey"><i class="fa fa-map-marker"></i> &nbsp;{{ sp.city }}</span><br>
 									<span class="is-size-7 has-text-grey">Joined {{sp.user.date_joined | date:"d M, Y"}}</span><br>
 									{{sp.user.age}} yrs, {{sp.height}}cm, {{sp.religion}}, {{sp.caste}}, {{sp.subcaste}}<br> {{sp.rasi}}, {{sp.nakshatra}}<br> 
@@ -228,9 +344,6 @@
 						</div>
 					</article>
 					{% endfor %}
-					{% else %}
-					<p class="has-text-danger has-padding-20">No Profiles found.</p>
-					{% endif %}
 				</div>
 
 				{% if show_profiles.has_other_pages %}
@@ -274,13 +387,20 @@
 							<div class="media">
 								<div class="media-left">
 									<figure class="image is-64x64">
-										{% for image in profile.profileimage_set.all %}
+										{% if sp.profileimage_set.all %}
+										{% for image in sp.profileimage_set.all %}
+										{% if forloop.first %}
 										<img src="{{image.file.url}}" class="is-rounded" style="width:64px !important;height:64px !important;">
+										{%endif%}	
 										{% endfor %}
+										{% else %}
+										<img src="{% static 'img/default-avatar.png' %}" class="is-rounded" style="width:64px !important;height:64px !important;">
+										{% endif %}
 									</figure>
 								</div>
 								<div class="media-content">
-									<p class="title is-5">{{profile.user.name}}</p>
+									<p class="is-5"><strong>{{profile.user.name}}</strong></p>
+									<p class="tag is-dark">{{profile.user.m_id}}</p>
 									<p class="subtitle is-7">{{profile.user.age}} yrs, {{profile.height}}cm, {{profile.religion}}, {{profile.caste}}, {{profile.subcaste}}<br>
 										{{profile.rasi}}, {{profile.nakshatra}}<br><a href="{% url 'view_profile' id=profile.user.id %}">view profile</a></p>
 									</div>
@@ -289,25 +409,115 @@
 						</div>
 						{% endfor %}
 						{% else %}
-						<p style="color: #F30"> No profiles yet, stay tuned</p>
+						<p class="has-text-grey"> No profiles yet, stay tuned</p>
 						{% endif %}
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-	<!--Footer-->
-	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20" style="bottom: 0">
-		<div class="container has-text-centered has-text-white">
-			<p class="is-size-5">TamilnaduYadava</p>
-			<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
-			<p class="is-size-7 has-text-light">Developed by JM</p>
-		</div>
-	</section>
-	<script>
-		$(document).ready( function(){
-			$('.select').on('change', function(){
+		<!--Footer-->
+		<section class="section is-block has-background-dark has-margin-top-40 has-padding-20" style="bottom: 0">
+			<div class="container has-text-centered has-text-white">
+				<p class="is-size-5">TamilnaduYadava</p>
+				<p><a href="{% url 'about_us' %}" class="has-text-white">About us</a> | <a href="{% url 'privacy_policy' %}" class="has-text-white">Privacy Policy</a> </p>
+				<p class="is-size-7 has-text-light">Developed by JM</p>
+			</div>
+		</section>
+		<script>
+			$(document).ready( function(){
+			//Check if preference exists
+			if($('#preference').data('exist') == true){
+				$("#preference").prop('checked', true);
+			}
+			else{
+				$("#preference").prop('checked', false);
+			}
+			if($('#preference').prop('checked')==true){
+				$('.panel_child').show();
+			}
+			else{
+				$('.panel_child').hide();
+			}
+			$('#preference').on('click', function(){
+				$('.panel_child').slideToggle(500);
+			});
+			//Initializations
+			var salaryValues = ['<5 LPA', '5-10 LPA', '10-15 LPA', '>15 LPA'];
+			var educationValues = ['Secondary', 'Higher Secondary', 'Under Graduate', 'Post Graduate', 'Ph.D', 'Self Taught']
+			var complexionValues = ['Very Fair', 'Fair', 'Wheatish Brown', 'Dark']
+			var marriedValues = ['Not married', 'Divorced', 'Widow', 'Other reason']
+
+			var prefered_salary = $('.salary-range-slider').data('prefered');
+			$('.salary-range-slider').data('from', salaryValues.indexOf(prefered_salary));
+
+			var prefered_education = $('.education-range-slider').data('prefered');
+			$('.education-range-slider').data('from', educationValues.indexOf(prefered_education));
+
+			var prefered_complexion = $('.complexion-range-slider').data('prefered');
+			$('.complexion-range-slider').data('from', complexionValues.indexOf(prefered_complexion));
+
+			var prefered_married = $('.married-range-slider').data('prefered');
+			$('.married-range-slider').data('from', marriedValues.indexOf(prefered_married));
+			
+			//Age
+			$(".age-range-slider").ionRangeSlider();
+			//Height
+			$(".height-range-slider").ionRangeSlider();
+			//Salary
+			$(".salary-range-slider").ionRangeSlider({
+				values: salaryValues,
+				from: 1
+			});
+			//Education
+			$(".education-range-slider").ionRangeSlider({
+				values: educationValues,
+				from: 2
+			});
+			//Complexion
+			$(".complexion-range-slider").ionRangeSlider({
+				values: complexionValues,
+				from: 1
+			});
+			//Married
+			$(".married-range-slider").ionRangeSlider({
+				values: marriedValues,
+				from: 0
+			});
+			//save prefernce
+			$('#save-preference').on('click', function(){
+				var age = $(".age-range-slider").val();
+				var height = $(".height-range-slider").val();
+				var salary = $(".salary-range-slider").val();
+				var education = $(".education-range-slider").val();
+				var complexion = $(".complexion-range-slider").val();
+				var married = $(".married-range-slider").val();
+				$.ajax(
+				{
+					type: "POST",
+					async: "true",
+					cache:"false",
+					url: 'update_preference',
+					data: {
+						'age' : age,
+						'height' : height,
+						'salary' : salary,
+						'education' : education,
+						'complexion' : complexion,
+						'married' : married
+					},
+					success: function(data){
+						alert('Preference Saved');
+						window.location.href = '{% url "feed" %}';
+					},
+					error:function(data){
+						alert("error");
+					}
+				})
+			});
+
+			//Sort
+			$('.sort-by').on('change', function(){
 				var key = $('select', this).val();
 				var attribute = $('select', this).attr('data-attribute');
 
@@ -325,7 +535,7 @@
 						}
 					}
 				}
-				else if(attribute == 'name'){
+				else{
 					if(key == 'Ascending'){
 						$(".profiles article").sort(sort_li).appendTo('.profiles');
 						function sort_li(a, b) {
@@ -339,32 +549,8 @@
 						}
 					}
 				}
-				else if(attribute == 'rasi'){
-					var profiles = $('.articles');
-
-					profiles.hide()
-					profiles.each(function(i, el) {
-						if($(el).attr('data-rasi') == key) {
-							$(el).show();
-						}
-					})
-				}
-				else{
-					var profiles = $('.articles');
-
-					profiles.hide()
-					profiles.each(function(i, el) {
-						if($(el).attr('data-nakshatra') == key) {
-							$(el).show();
-						}
-					})
-
-				}
-
 			});
-			
 		});
-		
 	</script>
 </body>
 </html>

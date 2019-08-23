@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('mainApp.urls')),
     path('logout/', views.logout_view, name="logout"),
     path('register/', views.UserRegistration_view, name="register"),
+    path('phone_verify', views.phone_verify, name="phone_verify"),
     path('createProfile/', views.CreateProfile_view, name="createProfile"),
     path('password_reset/', PasswordResetView.as_view(template_name='account/password_reset.html'), name='password_reset'),
     path('password_reset/done/', PasswordResetDoneView.as_view(template_name='account/password_reset_done.html'), name='password_reset_done'),

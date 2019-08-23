@@ -47,6 +47,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 		('Reason Not Listed', 'Reason Not Listed'),
 	]
 
+	m_id			= models.CharField(max_length=14, null=True, blank=True)
 	email 			= models.EmailField(verbose_name="email", max_length=60, unique=True)
 	name 			= models.CharField(verbose_name='name', max_length=50)
 	age 			= models.PositiveIntegerField(verbose_name="Age", null=True, blank=True)
@@ -160,8 +161,14 @@ class Profile(models.Model):
 		('Uthirattathi','Uthirattathi'),
 		('Revathi','Revathi'),
 	]
+	complexionChoices = [
+		('Very Fair', 'Very Fair' ),
+		('Fair', 'Fair'), 
+		('Wheatish Brown', 'Wheatish Brown'), 
+		('Dark', 'Dark'),
+	]
 	#Personal Details
-	user 				= models.ForeignKey(Account, on_delete=models.CASCADE, related_name='profile') #done
+	user 				= models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile') #done
 	education 			= models.CharField(max_length=40, choices=education_choices, null=True, default=3) #done
 	degree 				= models.CharField(max_length=40, null=True) #done
 	occupation 			= models.CharField(max_length=30, null=True) #done
@@ -176,7 +183,7 @@ class Profile(models.Model):
 	height 				= models.CharField(max_length=10, blank=True, null=True) #done
 	weight 				= models.CharField(max_length=10, blank=True, null=True) #done
 	subcaste 			= models.CharField(max_length=20, blank=True, null=True) #done
-	complexion 			= models.CharField(max_length=10, blank=True, null=True) #done
+	complexion 			= models.CharField(max_length=20, choices=complexionChoices, blank=True, null=True) #done
 	physical_disability = models.CharField(max_length=3, choices=choice) #done
 	pd_info				= models.CharField(max_length=30, blank=True, null=True) #Done
 
@@ -202,10 +209,21 @@ class Profile(models.Model):
 	def __str__(self):
 		return self.user.email
 
-
 class ProfileImage(models.Model):
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	file = models.ImageField(upload_to=get_image_path, null=True, blank=True, default='static/img/deafult-avatar.png') #done
 
 	def __str__(self):
 		return self.profile.user.email
+
+
+class Preference(models.Model):
+	profile 	= models.OneToOneField(Profile,  on_delete=models.CASCADE, related_name='preference')
+	age 		= models.CharField(verbose_name="prefered_age", max_length=20, null=True, blank=True)
+	height		= models.CharField(verbose_name="prefered_height", max_length=20, null=True, blank=True)
+	salary		= models.CharField(verbose_name="prefered_salary", max_length=20, null=True, blank=True)
+	education 	= models.CharField(verbose_name="prefered_education", max_length=20, null=True, blank=True)
+	complexion 	= models.CharField(verbose_name="prefered_complexion", max_length=20, null=True, blank=True)
+	married 	= models.CharField(verbose_name="prefered_married", max_length=20, null=True, blank=True)
+	def __str__(self):
+		return self.profile.user.name

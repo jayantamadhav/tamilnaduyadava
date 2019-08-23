@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
-from account.models import Profile, ProfileImage, Account
+from account.models import Profile, ProfileImage, Account, Preference
 from account.forms import ProfileCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import update_session_auth_hash
@@ -39,6 +39,10 @@ def privacy_policy_external(request):
 	return render(request, 'mainApp/privacy_policy_external.html', {})
 
 def home(request):
+	system_messages = messages.get_messages(request)
+	for message in system_messages:
+		pass
+	system_messages.used = True
 	user = request.user
 	if request.user.is_superuser:
 		return redirect('admin/')
@@ -71,15 +75,63 @@ def feed(request):
 	context = {}
 	profile = Profile.objects.get(user=request.user)
 	try:
+		preference = Preference.objects.get(profile=profile)
+	except Preference.DoesNotExist:
+		preference = ''
+	try:
 		profile_image = ProfileImage.objects.get(profile=profile)
 	except ProfileImage.DoesNotExist:
 		profile_image = ''
-	if profile.user.gender == 'M':
-		get_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True)
-		latest_profiles = get_profiles.order_by('-user__date_joined')[:3]
+	if preference:
+		age = int(preference.age)
+		height = int(preference.height)
+		salary = preference.salary
+		if salary == '<5 LPA':
+			min_salary = 0
+			max_salary = 500000
+		elif salary == '5-10 LPA':
+			min_salary = 500000
+			max_salary = 1000000
+		elif salary == '10-15 LPA':
+			min_salary = 1000000
+			max_salary = 1500000
+		else:
+			min_salary = 1500000
+			max_salary = 200000000
+		education = preference.education
+		complexion = preference.complexion
+		married = preference.married
+		if profile.user.gender == 'M':
+			get_profiles = Profile.objects.filter(
+				user__gender = 'F',
+				user__is_active=True,
+				user__age = age,
+				height = height,
+				salary__range = (min_salary, max_salary),
+				education = education,
+				complexion = complexion,
+				marital_status = married,
+			)
+			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
+		else:
+			get_profiles = Profile.objects.filter(
+				user__gender = 'M', 
+				user__is_active=True,
+				user__age = age,
+				height = height,
+				salary__range = (min_salary, max_salary),
+				education = education,
+				complexion = complexion,
+				marital_status = married,
+			)
+			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
-		get_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True)
-		latest_profiles = get_profiles.order_by('-user__date_joined')[:3]
+		if profile.user.gender == 'M':
+			get_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True)
+			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
+		else:
+			get_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True)
+			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
 	try:
@@ -93,6 +145,7 @@ def feed(request):
 		'profile_image' : profile_image,
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
+		'preference'	: preference,
 	}
 	return render(request, 'mainApp/feed.html', context )
 
@@ -100,21 +153,97 @@ def sort_by(request, key, value):
 	context = {}
 	profile = Profile.objects.get(user=request.user)
 	try:
+		preference = Preference.objects.get(profile=profile)
+	except Preference.DoesNotExist:
+		preference = ''
+	try:
 		profile_image = ProfileImage.objects.get(profile=profile)
 	except ProfileImage.DoesNotExist:
 		profile_image = ''
-	if profile.user.gender == 'M' :
-		if key == 'rasi':
-			get_profiles = Profile.objects.filter(user__gender = 'F', rasi = value, user__is_active=True)
+	if preference:
+		age = int(preference.age)
+		height = int(preference.height)
+		salary = preference.salary
+		if salary == '<5 LPA':
+			min_salary = 0
+			max_salary = 500000
+		elif salary == '5-10 LPA':
+			min_salary = 500000
+			max_salary = 1000000
+		elif salary == '10-15 LPA':
+			min_salary = 1000000
+			max_salary = 1500000
 		else:
-			get_profiles = Profile.objects.filter(user__gender = 'F', nakshatra = value, user__is_active=True)
-		latest_profiles = Profile.objects.filter(user__gender = 'F', is_active=True).order_by('-user__date_joined')[:3]
+			min_salary = 1500000
+			max_salary = 200000000
+		education = preference.education
+		complexion = preference.complexion
+		married = preference.married
+		if profile.user.gender == 'M' :
+			if key == 'rasi':
+				get_profiles = Profile.objects.filter(
+					user__gender = 'F', 
+					rasi = value, 
+					user__is_active=True,
+					user__age = age,
+					height = height,
+					salary__range = (min_salary, max_salary),
+					education = education,
+					complexion = complexion,
+					marital_status = married,
+				)
+			else:
+				get_profiles = Profile.objects.filter(
+					user__gender = 'F', 
+					nakshatra = value, 
+					user__is_active=True,
+					user__age = age,
+					height = height,
+					salary__range = (min_salary, max_salary),
+					education = education,
+					complexion = complexion,
+					marital_status = married,
+				)
+			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
+		else:
+			if key == 'rasi':
+				get_profiles = Profile.objects.filter(
+					user__gender = 'M', 
+					rasi = value,
+					user__is_active=True,
+					user__age = age,
+					height = height,
+					salary__range = (min_salary, max_salary),
+					education = education,
+					complexion = complexion,
+					marital_status = married,
+				)
+			else:
+				get_profiles = Profile.objects.filter(
+					user__gender = 'M', 
+					nakshatra = value, 
+					user__is_active=True,
+					user__age = age,
+					height = height,
+					salary__range = (min_salary, max_salary),
+					education = education,
+					complexion = complexion,
+					marital_status = married,
+				)
+			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
-		if key == 'rasi':
-			get_profiles = Profile.objects.filter(user__gender = 'M', rasi = value)
+		if profile.user.gender == 'M' :
+			if key == 'rasi':
+				get_profiles = Profile.objects.filter(user__gender = 'F', rasi = value, user__is_active=True)
+			else:
+				get_profiles = Profile.objects.filter(user__gender = 'F', nakshatra = value, user__is_active=True)
+			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 		else:
-			get_profiles = Profile.objects.filter(user__gender = 'M', nakshatra = value, user__is_active=True)
-		latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
+			if key == 'rasi':
+				get_profiles = Profile.objects.filter(user__gender = 'M', rasi = value)
+			else:
+				get_profiles = Profile.objects.filter(user__gender = 'M', nakshatra = value, user__is_active=True)
+			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
 	try:
@@ -128,6 +257,7 @@ def sort_by(request, key, value):
 		'profile_image' : profile_image,
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
+		'preference' : preference,
 	}
 	return render(request, 'mainApp/sort_by.html', context )
 
@@ -228,6 +358,10 @@ def view_profile(request, id):
 	return render(request, 'mainApp/view_profile.html', context)
 
 def change_password(request):
+	system_messages = messages.get_messages(request)
+	for message in system_messages:
+		pass
+	system_messages.used = True
 	view_profile = Profile.objects.get(user=request.user)
 	try:
 		profile_image = ProfileImage.objects.get(profile=view_profile)
@@ -256,4 +390,34 @@ def change_password(request):
 		'profile_image' : profile_image,
 	}
 	return render(request, 'mainApp/change_password.html', context)
+
+@csrf_exempt
+def update_preference(request):
+	profile = Profile.objects.get(user = request.user)
+	if request.POST:
+		try:
+			preference = Preference.objects.get(profile=profile)
+		except Preference.DoesNotExist:
+			preference = False
+		if preference:
+			preference.age = request.POST['age']
+			preference.height = request.POST['height']
+			preference.salary = request.POST['salary']
+			preference.education = request.POST['education']
+			preference.complexion = request.POST['complexion']
+			preference.married = request.POST['married']
+			preference.save()
+		else:
+			preference = Preference.objects.create(
+				profile=profile,
+				age=request.POST['age'],
+				height=request.POST['height'],
+				salary=request.POST['salary'],
+				education=request.POST['education'],
+				complexion=request.POST['complexion'],
+				married=request.POST['married'],
+			)
+			preference.save()
+		return HttpResponse('success')
+
 

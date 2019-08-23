@@ -88,6 +88,7 @@
 							</a>
 
 							<div class="navbar-dropdown">
+								<span class="is-size-7 has-text-light navbar-item is-block has-background-dark" >{{profile.user.m_id}}</span>
 								<a class="navbar-item" href="{% url 'manage_profile' %}">
 									Manage Profile
 								</a>
@@ -154,6 +155,10 @@
 						<table class="table is-fullwidth is-completely-borderless is-clearfix">
 							<th class="is-size-5 is-block has-background-primary has-text-light has-padding-10">Account Details</th>
 							<td><a href="{% url 'change_password' %}"><button class="button is-pulled-right is-outlined is-primary">Change Password</button></a></td>
+							<tr >
+								<th class="has-text-right">Matrimonial ID :</th>
+								<td class="has-text-left"> &nbsp; <span class=" tag is-dark">{{ profile.user.m_id }}</span></td>
+							</tr>
 							<tr >
 								<th class="has-text-right">Email :</th>
 								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.email }}</span></td>
@@ -324,7 +329,7 @@
 	<section class="section is-block has-background-dark has-margin-top-40 has-padding-20">
 		<div class="container has-text-centered has-text-white">
 			<p class="is-size-5">TamilnaduYadava</p>
-			<p><a href="" class="has-text-white">About us</a> | <a href="" class="has-text-white">Privacy Policy</a> | <a href="" class="has-text-white">Contact us</a></p>
+			<p><a href="" class="has-text-white">About us</a> | <a href="" class="has-text-white">Privacy Policy</a> </p>
 			<p class="is-size-7 has-text-light">Developed by JM</p>
 		</div>
 	</section>

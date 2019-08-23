@@ -7,9 +7,9 @@ import datetime
 # Register your models here.
 
 class AccountAdmin(UserAdmin):
-	list_display = ('email', 'username', 'gender', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by', 'is_active', 'reason')
+	list_display = ('m_id', 'email', 'username', 'gender', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by', 'is_active', 'reason')
 	search_fields = ('email', 'username')
-	readonly_fields = ('date_joined', 'last_login', 'created_by', 'payment_status',)
+	readonly_fields = ('date_joined', 'last_login', 'created_by', 'payment_status', 'm_id')
 	
 	add_form = RegistrationForm
 	filter_horizontal = ()
@@ -34,6 +34,11 @@ class AccountAdmin(UserAdmin):
 			get_age = get_age[:4]
 			now = datetime.datetime.now()
 			obj.age = now.year - int(get_age)
+		if obj.m_id == None:
+			now = datetime.datetime.now()
+			random_id = "{:05d}".format(request.user.id)
+			matrimony_id = 'TNY' + now.strftime('%y%m%d') + random_id
+			obj.m_id = matrimony_id
 		super().save_model(request, obj, form, change)
 
 
