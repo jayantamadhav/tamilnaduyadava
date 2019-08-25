@@ -222,8 +222,8 @@ class Preference(models.Model):
 	age 		= models.CharField(verbose_name="prefered_age", max_length=20, null=True, blank=True)
 	height		= models.CharField(verbose_name="prefered_height", max_length=20, null=True, blank=True)
 	salary		= models.CharField(verbose_name="prefered_salary", max_length=20, null=True, blank=True)
-	education 	= models.CharField(verbose_name="prefered_education", max_length=20, null=True, blank=True)
-	complexion 	= models.CharField(verbose_name="prefered_complexion", max_length=20, null=True, blank=True)
+	education 	= models.CharField(verbose_name="prefered_education", max_length=100, null=True, blank=True)
+	complexion 	= models.CharField(verbose_name="prefered_complexion", max_length=100, null=True, blank=True)
 	married 	= models.CharField(verbose_name="prefered_married", max_length=20, null=True, blank=True)
 	def __str__(self):
 		return self.profile.user.name

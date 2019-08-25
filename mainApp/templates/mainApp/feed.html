@@ -119,7 +119,7 @@
 					</div>
 				</div>
 				{% if preference %}
-				<nav class="panel has-margin-top-10">
+				<nav class="panel has-margin-top-10 is-size-7">
 					<p class="panel-heading is-clearfix is-block has-text-white has-background-dark">
 						Preferences
 						<label class="switch is-pulled-right">
@@ -128,39 +128,97 @@
 						</label>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_age">
-						Age
+						<strong>Age</strong>(in years)
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from="{{preference.age}}" />
+							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from='{{preference.age | slice:":2"}}' data-to='{{preference.age | slice:"3:"}}' />
 						</div>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_height">
-						Height
+						<strong>Height</strong>(in cm)
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="height-range-slider" name="my_range" value="" data-grid=true data-min="150" data-max="200" data-from="{{preference.height}}" />
-						</div>
-					</p>
-					<p class="panel-heading is-clearfix panel_child" id="preference_education">
-						Education
-						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="education-range-slider" name="my_range" value="" data-prefered='{{preference.education}}'/>
+							<input type="text" class="height-range-slider" name="my_range" value="" data-type='double' data-grid=true data-min="150" data-max="200" data-from='{{preference.height | slice:":3"}}' data-to='{{preference.height | slice:"4:"}}' />
 						</div>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_salary">
-						Salary
+						<strong>Salary</strong>(in LPA)
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
 							<input type="text" class="salary-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.salary}}'/>
 						</div>
 					</p>
-					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
-						Complexion
+					<p class="panel-heading is-clearfix panel_child" id="preference_education">
+						<strong>Education</strong>
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="complexion-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.complexion}}'/>
+							
+							{% if 'Secondary' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Secondary" checked>Secondary</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Secondary">Secondary</label><br>
+							{% endif %}
+
+							{% if 'Higher Secondary' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Higher Secondary" checked>Higher Secondary</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Higher Secondary" >Higher Secondary</label><br>
+							{% endif %}
+							
+							{% if 'Under Graduate' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Under Graduate" checked>Under Graduate</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Under Graduate">Under Graduate</label><br>
+							{% endif %}
+							
+							{% if 'Post Graduate' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Post Graduate" checked>Post Graduate</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Post Graduate">Post Graduate</label><br>
+							{% endif %}
+							
+							{% if 'Ph.D' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Ph.D" checked>Ph.D</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Ph.D">Ph.D</label><br>
+							{% endif %}
+							
+							{% if 'Self Taught' in education %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Self Taught" checked>Self Taught</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Self Taught">Self Taught</label><br>
+							{% endif %}
+
+						</div>
+					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
+						<strong>Complexion</strong>
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							{% if 'Very Fair' in complexion %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Very Fair" checked>Very Fair</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Very Fair">Very Fair</label><br>
+							{% endif %}
+
+							{% if 'Fair' in complexion %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Fair" checked>Fair</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Fair">Fair</label><br>
+							{% endif %}
+							
+							{% if 'Wheatish Brown' in complexion %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Wheatish Brown" checked>Wheatish Brown</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Wheatish Brown">Wheatish Brown</label><br>
+							{% endif %}
+
+							{% if 'Dark' in complexion %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Dark" checked>Dark</label><br>
+							{% else %}
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Dark">Dark</label><br>
+							{% endif %}
 						</div>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_marriedStatus">
 						Married Status
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="married-range-slider" name="my_range" value="" data-prefered='{{preference.married}}'/>
+							<input type="text" class="married-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.married}}'/>
 						</div>
 					</p>
 					<p class="panel_child is-clearfix has-padding-20" style="border: 1px solid #dadada;">
@@ -168,7 +226,7 @@
 					</p>
 				</nav>
 				{% else %}
-					<nav class="panel has-margin-top-10">
+				<nav class="panel has-margin-top-10">
 					<p class="panel-heading is-clearfix is-block has-text-white has-background-dark">
 						Preferences
 						<label class="switch is-pulled-right">
@@ -179,19 +237,13 @@
 					<p class="panel-heading is-clearfix panel_child" id="preference_age">
 						Age
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from='25' />
+							<input type="text" class="age-range-slider" name="my_range" value="" data-grid=true data-min="18" data-max="45" data-from='25' data-to='30'/>
 						</div>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_height">
 						Height
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="height-range-slider" name="my_range" value="" data-grid=true data-min="150" data-max="200" data-from="170" />
-						</div>
-					</p>
-					<p class="panel-heading is-clearfix panel_child" id="preference_education">
-						Education
-						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="education-range-slider" name="my_range" value="" data-prefered='{{preference.education}}'/>
+							<input type="text" class="height-range-slider" name="my_range" value="" data-grid=true data-min="150" data-max="200" data-from="160" />
 						</div>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_salary">
@@ -200,11 +252,24 @@
 							<input type="text" class="salary-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.salary}}'/>
 						</div>
 					</p>
+					<p class="panel-heading is-clearfix panel_child" id="preference_education">
+						Education
+						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Secondary">Secondary</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Higher Secondary">Higher Secondary</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Under Graduate">Under Graduate</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Post Graduate">Post Graduate</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Ph.D">Ph.D</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Self Taught">Self Taught</label><br>
+						</div>
+					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
 						Complexion
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<input type="text" class="complexion-range-slider" name="my_range" value="" data-grid=true data-prefered='{{preference.complexion}}'/>
-						</div>
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Very Fair">Very Fair</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Fair">Fair</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Wheatish Brown">Wheatish Brown</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Dark">Dark</label><br>
 					</p>
 					<p class="panel-heading is-clearfix panel_child" id="preference_marriedStatus">
 						Married Status
@@ -445,16 +510,13 @@
 				$('.panel_child').slideToggle(500);
 			});
 			//Initializations
-			var salaryValues = ['<5 LPA', '5-10 LPA', '10-15 LPA', '>15 LPA'];
+			var salaryValues = ['Below 5 LPA', '5-10 LPA', '10-15 LPA', 'Above 15 LPA'];
 			var educationValues = ['Secondary', 'Higher Secondary', 'Under Graduate', 'Post Graduate', 'Ph.D', 'Self Taught']
 			var complexionValues = ['Very Fair', 'Fair', 'Wheatish Brown', 'Dark']
 			var marriedValues = ['Not married', 'Divorced', 'Widow', 'Other reason']
 
 			var prefered_salary = $('.salary-range-slider').data('prefered');
 			$('.salary-range-slider').data('from', salaryValues.indexOf(prefered_salary));
-
-			var prefered_education = $('.education-range-slider').data('prefered');
-			$('.education-range-slider').data('from', educationValues.indexOf(prefered_education));
 
 			var prefered_complexion = $('.complexion-range-slider').data('prefered');
 			$('.complexion-range-slider').data('from', complexionValues.indexOf(prefered_complexion));
@@ -463,36 +525,46 @@
 			$('.married-range-slider').data('from', marriedValues.indexOf(prefered_married));
 			
 			//Age
-			$(".age-range-slider").ionRangeSlider();
+			$(".age-range-slider").ionRangeSlider({
+				skin: "round",
+				type:'double'
+			});
 			//Height
-			$(".height-range-slider").ionRangeSlider();
+			$(".height-range-slider").ionRangeSlider({
+				skin: "round",
+				type:'double'
+			});
 			//Salary
 			$(".salary-range-slider").ionRangeSlider({
+				skin: "round",
 				values: salaryValues,
 				from: 1
 			});
-			//Education
-			$(".education-range-slider").ionRangeSlider({
-				values: educationValues,
-				from: 2
-			});
 			//Complexion
 			$(".complexion-range-slider").ionRangeSlider({
+				skin: "round",
 				values: complexionValues,
 				from: 1
 			});
 			//Married
 			$(".married-range-slider").ionRangeSlider({
+				skin: "round",
 				values: marriedValues,
 				from: 0
 			});
 			//save prefernce
 			$('#save-preference').on('click', function(){
+				var education_options = '';
+				var complexion_options = '';
+				$('.education:checked').map(function(_, el) {
+					education_options += ',' + $(el).val();
+				}).get();
+				$('.complexion:checked').map(function(_, el) {
+					complexion_options += ',' + $(el).val();
+				}).get();
 				var age = $(".age-range-slider").val();
 				var height = $(".height-range-slider").val();
 				var salary = $(".salary-range-slider").val();
-				var education = $(".education-range-slider").val();
-				var complexion = $(".complexion-range-slider").val();
 				var married = $(".married-range-slider").val();
 				$.ajax(
 				{
@@ -501,16 +573,17 @@
 					cache:"false",
 					url: 'update_preference',
 					data: {
+						csrfmiddlewaretoken: '{{ csrf_token }}',
 						'age' : age,
 						'height' : height,
 						'salary' : salary,
-						'education' : education,
-						'complexion' : complexion,
-						'married' : married
+						'married' : married,
+						'education' : education_options,
+						'complexion' : complexion_options
 					},
 					success: function(data){
 						alert('Preference Saved');
-						window.location.href = '{% url "feed" %}';
+						window.location.reload();
 					},
 					error:function(data){
 						alert("error");

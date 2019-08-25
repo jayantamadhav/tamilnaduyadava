@@ -17,4 +17,4 @@ urlpatterns = [
     path('sort_by/<str:key>/<str:value>', views.sort_by, name="sort_by"),					       #Sort by rasi or nakshatra
     path('change_password', views.change_password, name="change_password"),                        #Password change view
     path('update_preference', views.update_preference, name="update_preference"),                  #Update User Preference
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

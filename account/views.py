@@ -44,7 +44,6 @@ def phone_verify(request):
 			age = now.year - get_age
 			user = Account.objects.create(
 				email = email,
-				password = raw_password,
 				username = username,
 				dob = dob,
 				name = name,
@@ -53,6 +52,7 @@ def phone_verify(request):
 				created_by = created_by,
 				age = age,
 			)
+			user.set_password(raw_password)
 			user.save()
 			if user:
 				login(request, user)
@@ -94,6 +94,7 @@ def UserRegistration_view(request):
 			for i in range(6):
 				otp += str(random.randint(0,9))
 			send_sms(phone, otp)
+			print(otp)
 			request.session['generated_otp'] = otp
 			return redirect('phone_verify')
 		else:

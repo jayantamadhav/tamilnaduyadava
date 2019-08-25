@@ -53,12 +53,13 @@ def home(request):
 			return redirect('createProfile')
 	else:
 		if request.POST:
-			userinput = request.POST['email'].lower()
+			userinput = request.POST['email']
+			email = ''
+			password = request.POST['password']
 			try:
-				email = Account.objects.get(username=userinput).email
+				email = Account.objects.get(username=userinput).email.lower()
 			except Account.DoesNotExist:
 				email = request.POST['email'].lower()
-			password = request.POST['password']
 			user = authenticate(email = email, password = password)
 			if user:
 				login(request, user)
@@ -83,8 +84,10 @@ def feed(request):
 	except ProfileImage.DoesNotExist:
 		profile_image = ''
 	if preference:
-		age = int(preference.age)
-		height = int(preference.height)
+		min_age = preference.age[:2]
+		max_age = preference.age[3:]
+		min_height = preference.height[:3]
+		max_height = preference.height[4:]
 		salary = preference.salary
 		if salary == '<5 LPA':
 			min_salary = 0
@@ -98,18 +101,18 @@ def feed(request):
 		else:
 			min_salary = 1500000
 			max_salary = 200000000
-		education = preference.education
-		complexion = preference.complexion
+		education = preference.education.split(',')[1:]
+		complexion = preference.complexion.split(',')[1:]
 		married = preference.married
 		if profile.user.gender == 'M':
 			get_profiles = Profile.objects.filter(
 				user__gender = 'F',
 				user__is_active=True,
-				user__age = age,
-				height = height,
+				user__age__range = (min_age, max_age),
+				height__range = (min_height, max_height),
 				salary__range = (min_salary, max_salary),
-				education = education,
-				complexion = complexion,
+				education__in = education,
+				complexion__in = complexion,
 				marital_status = married,
 			)
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
@@ -117,11 +120,11 @@ def feed(request):
 			get_profiles = Profile.objects.filter(
 				user__gender = 'M', 
 				user__is_active=True,
-				user__age = age,
-				height = height,
+				user__age__range = (min_age, max_age),
+				height__range = (min_height, max_height),
 				salary__range = (min_salary, max_salary),
-				education = education,
-				complexion = complexion,
+				education__in = education,
+				complexion__in = complexion,
 				marital_status = married,
 			)
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
@@ -146,6 +149,8 @@ def feed(request):
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference'	: preference,
+		'education'		: education,
+		'complexion'	: complexion,
 	}
 	return render(request, 'mainApp/feed.html', context )
 
@@ -161,10 +166,12 @@ def sort_by(request, key, value):
 	except ProfileImage.DoesNotExist:
 		profile_image = ''
 	if preference:
-		age = int(preference.age)
-		height = int(preference.height)
+		min_age = preference.age[:2]
+		max_age = preference.age[3:]
+		min_height = preference.height[:3]
+		max_height = preference.height[4:]
 		salary = preference.salary
-		if salary == '<5 LPA':
+		if salary == 'Below 5 LPA':
 			min_salary = 0
 			max_salary = 500000
 		elif salary == '5-10 LPA':
@@ -176,8 +183,8 @@ def sort_by(request, key, value):
 		else:
 			min_salary = 1500000
 			max_salary = 200000000
-		education = preference.education
-		complexion = preference.complexion
+		education = preference.education.split(',')[1:]
+		complexion = preference.complexion.split(',')[1:]
 		married = preference.married
 		if profile.user.gender == 'M' :
 			if key == 'rasi':
@@ -185,11 +192,11 @@ def sort_by(request, key, value):
 					user__gender = 'F', 
 					rasi = value, 
 					user__is_active=True,
-					user__age = age,
-					height = height,
+					user__age__range = (min_age, max_age),
+					height__range = (min_height, max_height),
 					salary__range = (min_salary, max_salary),
-					education = education,
-					complexion = complexion,
+					education__in = education,
+					complexion__in = complexion,
 					marital_status = married,
 				)
 			else:
@@ -197,11 +204,11 @@ def sort_by(request, key, value):
 					user__gender = 'F', 
 					nakshatra = value, 
 					user__is_active=True,
-					user__age = age,
-					height = height,
+					user__age__range = (min_age, max_age),
+					height__range = (min_height, max_height),
 					salary__range = (min_salary, max_salary),
-					education = education,
-					complexion = complexion,
+					education__in = education,
+					complexion__in = complexion,
 					marital_status = married,
 				)
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
@@ -211,11 +218,11 @@ def sort_by(request, key, value):
 					user__gender = 'M', 
 					rasi = value,
 					user__is_active=True,
-					user__age = age,
-					height = height,
+					user__age__range = (min_age, max_age),
+					height__range = (min_height, max_height),
 					salary__range = (min_salary, max_salary),
-					education = education,
-					complexion = complexion,
+					education__in = education,
+					complexion__in = complexion,
 					marital_status = married,
 				)
 			else:
@@ -223,11 +230,11 @@ def sort_by(request, key, value):
 					user__gender = 'M', 
 					nakshatra = value, 
 					user__is_active=True,
-					user__age = age,
-					height = height,
+					user__age__range = (min_age, max_age),
+					height__range = (min_height, max_height),
 					salary__range = (min_salary, max_salary),
-					education = education,
-					complexion = complexion,
+					education__in = education,
+					complexion__in = complexion,
 					marital_status = married,
 				)
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
@@ -258,6 +265,8 @@ def sort_by(request, key, value):
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference' : preference,
+		'education' : education,
+		'complexion' : complexion,
 	}
 	return render(request, 'mainApp/sort_by.html', context )
 
@@ -391,9 +400,9 @@ def change_password(request):
 	}
 	return render(request, 'mainApp/change_password.html', context)
 
-@csrf_exempt
 def update_preference(request):
 	profile = Profile.objects.get(user = request.user)
+	print(request.POST['education'], request.POST['complexion'] )
 	if request.POST:
 		try:
 			preference = Preference.objects.get(profile=profile)
@@ -419,5 +428,4 @@ def update_preference(request):
 			)
 			preference.save()
 		return HttpResponse('success')
-
 

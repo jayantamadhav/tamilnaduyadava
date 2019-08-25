@@ -8,7 +8,7 @@ import datetime
 
 class AccountAdmin(UserAdmin):
 	list_display = ('m_id', 'email', 'username', 'gender', 'date_joined', 'last_login', 'is_staff', 'payment_status', 'custom_group', 'created_by', 'is_active', 'reason')
-	search_fields = ('email', 'username')
+	search_fields = ('email', 'username', 'gender', 'm_id',)
 	readonly_fields = ('date_joined', 'last_login', 'created_by', 'payment_status', 'm_id')
 	
 	add_form = RegistrationForm
