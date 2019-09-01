@@ -123,7 +123,6 @@ $(document).ready(function() {
 	//removes the "active" class to .popup and .popup-content when the "Close" button is clicked 
 	$("#close").on("click", function() {
 		$('.modal').removeClass('is-active');
-		//$(".popup-overlay, .popup-content").removeClass("active");	
 	});
 	$(document).on('keypress', '.numbers', function(key) {
 		if(key.charCode < 48 || key.charCode > 57) return false;

@@ -115,6 +115,8 @@ def feed(request):
 				complexion__in = complexion,
 				marital_status = married,
 			)
+			context['education'] = education
+			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 		else:
 			get_profiles = Profile.objects.filter(
@@ -127,6 +129,8 @@ def feed(request):
 				complexion__in = complexion,
 				marital_status = married,
 			)
+			context['education'] = education
+			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
 		if profile.user.gender == 'M':
@@ -149,8 +153,6 @@ def feed(request):
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference'	: preference,
-		'education'		: education,
-		'complexion'	: complexion,
 	}
 	return render(request, 'mainApp/feed.html', context )
 
@@ -211,6 +213,8 @@ def sort_by(request, key, value):
 					complexion__in = complexion,
 					marital_status = married,
 				)
+			context['education'] = education
+			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 		else:
 			if key == 'rasi':
@@ -237,6 +241,8 @@ def sort_by(request, key, value):
 					complexion__in = complexion,
 					marital_status = married,
 				)
+			context['education'] = education
+			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
 		if profile.user.gender == 'M' :
@@ -265,8 +271,6 @@ def sort_by(request, key, value):
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference' : preference,
-		'education' : education,
-		'complexion' : complexion,
 	}
 	return render(request, 'mainApp/sort_by.html', context )
 

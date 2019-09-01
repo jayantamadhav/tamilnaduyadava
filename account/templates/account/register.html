@@ -184,10 +184,11 @@
 			});
 			$(function () {
 				var currentYear = (new Date).getFullYear();
-				var end_date = "01/01/"+ (currentYear-10).toString();
+				var end_date = "01/01/"+ (currentYear-18).toString();
 				$("#datepicker").datepicker({
 					endDate: end_date,
 					format: "dd/mm/yyyy",
+					autoHide: true
 				});
 			});
 			$('.numbers').keypress(function(key) {
