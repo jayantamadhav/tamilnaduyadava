@@ -132,5 +132,5 @@ $(document).ready(function() {
 		if(key.charCode < 48 || key.charCode > 57) return false;
 		if($(this).val().length > 2) return false;
 	});
-
+	
 });

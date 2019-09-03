@@ -171,11 +171,11 @@
 				var age = (new Date).getFullYear() - parseInt(year.substr(year.length - 4));
 				if (gender == 'M' && age < 21){
 					$('.modal').addClass('is-active');
-					$('.minor-error').html('Men below age 18 are considered minor and are not allowed to create profile.');
+					$('.minor-error').html('Men below age 21 are considered minor and are not allowed to create profile.');
 				}
 				else if(gender == 'F' && age < 18){
 					$('.modal').addClass('is-active');
-					$('.minor-error').html('Ladies below age 21 are considered minor and are not allowed to create profile');
+					$('.minor-error').html('Ladies below age 18 are considered minor and are not allowed to create profile');
 				}
 				else{
 					$(this).submit();

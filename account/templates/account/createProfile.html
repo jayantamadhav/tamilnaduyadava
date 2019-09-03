@@ -333,12 +333,12 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label has-text-grey">Brothers Married?</label>
+                            <label class="label has-text-grey" id="bro_married">Brothers Married?</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    {% render_field profile_form.sibling_bro_married class="input"%}
+                                    <select name="sibling_bro_married" id="id_sibling_bro_married" class="input"></select>
                                 </div>
                             </div>
                         </div>
@@ -357,12 +357,12 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label has-text-grey">Sisters Married?</label>
+                            <label class="label has-text-grey" id='sis_married'>Sisters Married?</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    {% render_field profile_form.sibling_sis_married class="input"%}
+                                    <select name="sibling_sis_married" id="id_sibling_sis_married" class="input"></select>
                                 </div>
                             </div>
                         </div>
@@ -573,18 +573,17 @@ function validateForm() {
     for (i = 0; i < y.length; i++) {
     // If a field is empty...
     if (y[i].value == "") {
-        console.log(y[i]);
         if(y[i].name =="native_city" || y[i].name =="native_state" || y[i].name == "bio" || y[i].name == "caste" || y[i].name == "phone1" || y[i].name == "phone2" || y[i].name == "pd_info" || y[i].name == "bio" || y[i].name == "horoscope" || y[i].name == "profile_image") break;
-            else{
-                y[i].className += " is-danger";
-                valid = false;
-                document.getElementById("invalid-message").style.display = "block";
-            }
-        }
         else{
-          document.getElementById("invalid-message").style.display = "none";
-      }
+            y[i].className += " is-danger";
+            valid = false;
+            document.getElementById("invalid-message").style.display = "block";
+        }
+    }
+    else{
+      document.getElementById("invalid-message").style.display = "none";
   }
+}
   // If the valid status is true, mark the step as finished and valid:
   if (valid) {
     document.getElementsByClassName("step")[currentTab].className += " finish";
@@ -601,9 +600,53 @@ function fixStepIndicator(n) {
   //... and adds the "active" class on the current step:
   x[n].className += " active";
 }
-$('.numbers').keypress(function(key) {
-    if(key.charCode < 48 || key.charCode > 57) return false;
-    if($(this).val().length > 9) return false;
+
+$(document).ready(function(){
+    $('#id_sibling_bro_married').hide();
+    $('#bro_married').hide();
+    $('#id_sibling_sis_married').hide();
+    $('#sis_married').hide();
+    $('#id_sibling_bro').change(function(){
+        if($(this).val()==0){
+            $('#id_sibling_bro_married').hide();
+            $('#bro_married').hide();
+        }
+        else{
+            $("#id_sibling_bro_married").html('');
+            $('#id_sibling_bro_married').show();
+            $('#bro_married').show();
+            var list = [];
+            for (var i = 0; i <= $(this).val(); i++) {
+                list.push(i);
+            }
+            $(list).each(function(index){
+                $("#id_sibling_bro_married").append('<option id="'+index+'" value="' + index +'">'+ index+'</option>');
+            })
+        }
+    });
+    $('#id_sibling_sis').change(function(){
+        if($(this).val()==0){
+            $('#id_sibling_sis_married').hide();
+            $('#sis_married').hide();
+        }
+        else{
+            $("#id_sibling_sis_married").html('');
+            $('#id_sibling_sis_married').show();
+            $('#sis_married').show();
+            var list = [];
+            for (var i = 0; i <= $(this).val(); i++) {
+                list.push(i);
+            }
+            $(list).each(function(index){
+                $("#id_sibling_sis_married").append('<option id="'+index+'" value="' + index +'">'+ index+'</option>');
+            })
+        }
+    });
+    $('.numbers').keypress(function(key) {
+        if(key.charCode < 48 || key.charCode > 57) return false;
+        if($(this).val().length > 9) return false;
+    });
+
 });
 </script>
 </body>

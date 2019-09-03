@@ -91,18 +91,19 @@ def feed(request):
 		salary = preference.salary
 		if salary == '<5 LPA':
 			min_salary = 0
-			max_salary = 500000
+			max_salary = 5
 		elif salary == '5-10 LPA':
-			min_salary = 500000
-			max_salary = 1000000
+			min_salary = 5
+			max_salary = 1
 		elif salary == '10-15 LPA':
-			min_salary = 1000000
-			max_salary = 1500000
+			min_salary = 10
+			max_salary = 15
 		else:
-			min_salary = 1500000
-			max_salary = 200000000
+			min_salary = 15
+			max_salary = 1000000
 		education = preference.education.split(',')[1:]
 		complexion = preference.complexion.split(',')[1:]
+		print(education, complexion)
 		married = preference.married
 		if profile.user.gender == 'M':
 			get_profiles = Profile.objects.filter(
@@ -115,8 +116,6 @@ def feed(request):
 				complexion__in = complexion,
 				marital_status = married,
 			)
-			context['education'] = education
-			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 		else:
 			get_profiles = Profile.objects.filter(
@@ -129,8 +128,6 @@ def feed(request):
 				complexion__in = complexion,
 				marital_status = married,
 			)
-			context['education'] = education
-			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
 		if profile.user.gender == 'M':
@@ -139,6 +136,8 @@ def feed(request):
 		else:
 			get_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True)
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
+		education = ''
+		complexion = ''
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
 	try:
@@ -147,13 +146,18 @@ def feed(request):
 		show_profiles = paginator.page(1)
 	except EmptyPage:
 		show_profiles = paginator.page(paginator.num_pages)
+	
 	context = {
 		'profile' : profile,
 		'profile_image' : profile_image,
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference'	: preference,
+		'education'		: education,
+		'complexion'	: complexion
 	}
+
+	print(context)
 	return render(request, 'mainApp/feed.html', context )
 
 def sort_by(request, key, value):
@@ -175,15 +179,15 @@ def sort_by(request, key, value):
 		salary = preference.salary
 		if salary == 'Below 5 LPA':
 			min_salary = 0
-			max_salary = 500000
+			max_salary = 5
 		elif salary == '5-10 LPA':
-			min_salary = 500000
-			max_salary = 1000000
+			min_salary = 5
+			max_salary = 10
 		elif salary == '10-15 LPA':
-			min_salary = 1000000
-			max_salary = 1500000
+			min_salary = 10
+			max_salary = 15
 		else:
-			min_salary = 1500000
+			min_salary = 15
 			max_salary = 200000000
 		education = preference.education.split(',')[1:]
 		complexion = preference.complexion.split(',')[1:]
@@ -213,8 +217,6 @@ def sort_by(request, key, value):
 					complexion__in = complexion,
 					marital_status = married,
 				)
-			context['education'] = education
-			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'F', user__is_active=True).order_by('-user__date_joined')[:3]
 		else:
 			if key == 'rasi':
@@ -241,8 +243,6 @@ def sort_by(request, key, value):
 					complexion__in = complexion,
 					marital_status = married,
 				)
-			context['education'] = education
-			context['complexion'] = complexion
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
 	else:
 		if profile.user.gender == 'M' :
@@ -257,6 +257,8 @@ def sort_by(request, key, value):
 			else:
 				get_profiles = Profile.objects.filter(user__gender = 'M', nakshatra = value, user__is_active=True)
 			latest_profiles = Profile.objects.filter(user__gender = 'M', user__is_active=True).order_by('-user__date_joined')[:3]
+		complexion = ''
+		education = ''
 	page = request.GET.get('page', 1)
 	paginator = Paginator(get_profiles, 10)
 	try:
@@ -271,6 +273,8 @@ def sort_by(request, key, value):
 		'show_profiles' : show_profiles,
 		'latest_profiles' : latest_profiles,
 		'preference' : preference,
+		'education' : education,
+		'complexion' : complexion
 	}
 	return render(request, 'mainApp/sort_by.html', context )
 
@@ -406,10 +410,17 @@ def change_password(request):
 
 def update_preference(request):
 	profile = Profile.objects.get(user = request.user)
-	print(request.POST['education'], request.POST['complexion'] )
 	if request.POST:
 		try:
 			preference = Preference.objects.get(profile=profile)
+			print(
+				preference.age,
+				preference.height,
+				preference.salary,
+				preference.education,
+				preference.complexion,
+				preference.married
+			)
 		except Preference.DoesNotExist:
 			preference = False
 		if preference:
