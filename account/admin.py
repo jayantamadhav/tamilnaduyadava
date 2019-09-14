@@ -34,6 +34,7 @@ class AccountAdmin(UserAdmin):
 			get_age = get_age[:4]
 			now = datetime.datetime.now()
 			obj.age = now.year - int(get_age)
+			print(obj.age)
 		if obj.m_id == None:
 			now = datetime.datetime.now()
 			random_id = "{:05d}".format(request.user.id)

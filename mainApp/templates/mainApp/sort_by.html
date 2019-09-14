@@ -222,7 +222,8 @@
 						</div>
 					</p>
 					<p class="panel_child is-clearfix has-padding-20" style="border: 1px solid #dadada;">
-						<button class=" button is-outlined is-primary is-pulled-right" id="save-preference">Save Preferences</button>
+						<button class=" button is-outlined is-danger is-small" id="reset-preference">Reset Preferences</button>
+						<button class=" button is-outlined is-primary is-small" id="save-preference">Save Preferences</button>
 					</p>
 				</nav>
 				{% else %}
@@ -569,6 +570,8 @@
 				$.ajax(
 				{
 					type: "POST",
+					async: "true",
+					cache:"false",
 					url: 'update_preference',
 					data: {
 						csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -581,15 +584,29 @@
 					},
 					success: function(data){
 						alert('Preference Saved');
-						window.location.href= "{% url 'feed' %}";
+						window.location.reload();
 					},
 					error:function(data){
 						alert("error");
-						console.error();
 					}
 				})
 			});
-
+			$('#reset-preference').on('click', function(){
+				$.ajax(
+				{
+					type: "GET",
+					async: "true",
+					cache:"false",
+					url: 'update_preference',
+					success: function(data){
+						alert('Preference Reset');
+						window.location.reload();
+					},
+					error:function(data){
+						alert("error");
+					}
+				})
+			});
 			//Sort
 			$('.sort-by').on('change', function(){
 				var key = $('select', this).val();

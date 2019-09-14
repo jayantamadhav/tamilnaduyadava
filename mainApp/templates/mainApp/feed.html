@@ -222,7 +222,8 @@
 						</div>
 					</p>
 					<p class="panel_child is-clearfix has-padding-20" style="border: 1px solid #dadada;">
-						<button class=" button is-outlined is-primary is-pulled-right" id="save-preference">Save Preferences</button>
+						<button class=" button is-outlined is-danger is-small" id="reset-preference">Reset Preferences</button>
+						<button class=" button is-outlined is-primary is-small" id="save-preference">Save Preferences</button>
 					</p>
 				</nav>
 				{% else %}
@@ -255,7 +256,7 @@
 					<p class="panel-heading is-clearfix panel_child" id="preference_education">
 						Education
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Secondary">Secondary</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Secondary" checked>Secondary</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Higher Secondary">Higher Secondary</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Under Graduate">Under Graduate</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="education" type="checkbox" value="Post Graduate">Post Graduate</label><br>
@@ -266,7 +267,7 @@
 					<p class="panel-heading is-clearfix panel_child" id="preference_complexion">
 						Complexion
 						<div class="panel_child container has-padding-10" style="background-color:white;border-left: 1px solid #dadada;border-right: 1px solid #dadada">
-							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Very Fair">Very Fair</label><br>
+							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Very Fair" checked >Very Fair</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Fair">Fair</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Wheatish Brown">Wheatish Brown</label><br>
 							<label class="checkbox has-padding-left-20 "><input class="complexion" type="checkbox" value="Dark">Dark</label><br>
@@ -590,7 +591,22 @@
 					}
 				})
 			});
-
+			$('#reset-preference').on('click', function(){
+				$.ajax(
+				{
+					type: "GET",
+					async: "true",
+					cache:"false",
+					url: 'update_preference',
+					success: function(data){
+						alert('Preference Reset');
+						window.location.reload();
+					},
+					error:function(data){
+						alert("error");
+					}
+				})
+			});
 			//Sort
 			$('.sort-by').on('change', function(){
 				var key = $('select', this).val();

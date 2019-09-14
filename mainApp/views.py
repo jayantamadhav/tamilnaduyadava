@@ -443,4 +443,8 @@ def update_preference(request):
 			)
 			preference.save()
 		return HttpResponse('success')
+	elif request.method == 'GET' :
+		preference = Preference.objects.get(profile=profile)
+		preference.delete()
+		return HttpResponse('Success')
 

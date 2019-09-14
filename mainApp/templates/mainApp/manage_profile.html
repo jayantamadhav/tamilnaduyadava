@@ -17,25 +17,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
 	<Style>
-	.popup-overlay {
-		visibility:hidden;
-	}
+		.popup-overlay {
+			visibility:hidden;
+		}
 
-	.popup-content {
-		visibility:hidden;
-	}
-	.popup-overlay.active{
-		visibility:visible;
-	}
+		.popup-content {
+			visibility:hidden;
+		}
+		.popup-overlay.active{
+			visibility:visible;
+		}
 
-	.popup-content.active {
-		visibility:visible;
-	}
-	.edit:hover{
-		color: blue;
-		cursor: pointer;
-	}
-</Style>
+		.popup-content.active {
+			visibility:visible;
+		}
+		.edit:hover{
+			color: blue;
+			cursor: pointer;
+		}
+		.control{
+			padding: 10px;
+		}
+	</Style>
 </head>
 <body style="background:none">
 	<!-- Header -->
@@ -105,11 +108,14 @@
 	</div>
 
 	<!-- Content Container -->
-	<section class="container is-block has-background-white has-padding-20 has-margin-top-30">
-		<p class="is-size-3 is-size-4-mobile has-text-centered">Edit profile</p>
-		<div class="container has-padding-20">
+	<section>
+		<div class="has-text-centered has-padding-20">
+			<p class="is-size-2 is-size-3-mobile">Manage your profile</p>
+		</div>
+		<div class="container">
 			<div class="columns">
-				<div class="column is-3 has-text-centered">
+				<div class="column is-3 has-text-centered has-padding-20" style="background-image: linear-gradient(to bottom right, #002248,#347dcf);">
+					<p class="is-size-3 has-text-light has-margin-bottom-10">Profile Picture</p>
 					<form method="post" id="manage_pic" enctype="multipart/form-data">
 						{% csrf_token %}
 						<figure class="image is-256x256 is-inline-block" style="margin:auto;">
@@ -119,7 +125,7 @@
 							<img src="{% static 'img/default-avatar.png' %}" class="profile-pic is-rounded" name="profile-pic" style="width:256px !important;height:256px !important;">
 							{% endif %}
 						</figure>
-						<div class="file is-primary has-margin-top-20">
+						<div class="file has-margin-top-20">
 							<label class="file-label">
 								<input class="file-input" id="profile-update" type="file" name="profile_image">
 								<span class="file-cta ">
@@ -151,158 +157,439 @@
 					</form>
 				</div>
 				<div class="column">
-					<div class="container">
-						<table class="table is-fullwidth is-completely-borderless is-clearfix">
-							<th class="is-size-5 is-block has-background-primary has-text-light has-padding-10">Account Details</th>
-							<td><a href="{% url 'change_password' %}"><button class="button is-pulled-right is-outlined is-primary">Change Password</button></a></td>
-							<tr >
-								<th class="has-text-right">Matrimonial ID :</th>
-								<td class="has-text-left"> &nbsp; <span class=" tag is-dark">{{ profile.user.m_id }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Email :</th>
-								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.email }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Username :</th>
-								<td class="has-text-left"> &nbsp; <span id="email">{{ profile.user.username }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Name :</th>
-								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="name"><span id="name">{{ profile.user.name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr> 
-							<tr >
-								<th class="has-text-right">Age :</th>
-								<td class="has-text-left"> &nbsp; <span id="age">{{ profile.user.age }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Date of Birth :</th>
-								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="dob"><span id="dob">{{ profile.user.dob }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr>
-								<th class="has-text-right">Gender :</th>
-								<td class="has-text-left"> &nbsp; <span id="gender">{{ profile.user.gender }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Phone :</th>
-								<td class="has-text-left"> &nbsp; <span id="phone">{{ profile.user.phone }}</span></td>
-							</tr>
-							<th class="is-size-5 is-block has-background-primary has-margin-top-10 has-text-light has-padding-10">Personal Details</th>
-							<tr >
-								<th class="has-text-right">Education :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="education"><span id="education">{{ profile.education }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr> 
-							<tr >
-								<th class="has-text-right">Occupation :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="occupation"><span id="occupation">{{ profile.occupation }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Salary :</th>
-								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="salary"><span id="salary">{{ profile.salary }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Marital Status :</th>
-								<td class="has-text-left"> &nbsp; <span class=" edit"  data-tag="marital_status"><span id="marital_status">{{ profile.marital_status }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Religion :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="religion"><span id="religion">{{ profile.religion }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Caste :</th>
-								<td class="has-text-left"> &nbsp; <span id="caste">{{ profile.caste }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Sub-caste :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="subcaste"><span id="subcaste">{{ profile.subcaste }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Rasi :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="rasi"><span id="rasi">{{ profile.rasi }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Nakshatra :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="nakshatra"><span id="nakshatra">{{ profile.nakshatra }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Height :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="height"><span id="height">{{ profile.height }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Weight :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="weight"><span id="weight">{{ profile.weight }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Complexion :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="complexion"><span id="complexion">{{ profile.complexion }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Physical Disability :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="physical_disability"><span id="physical_disability">{{ profile.physical_disability }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Phone :</th>
-								<td class="has-text-left"> &nbsp;<span id="phone1">{{ profile.user.phone }}</span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Alternate Phone :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="phone2"><span id="phone2">{{ profile.phone2 }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Current City :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="city"><span id="city">{{ profile.city }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Current State :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="state"><span id="state">{{ profile.state }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Native City :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="native_city"><span id="native_city">{{ profile.native_city }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Native State :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="native_state"><span id="native_state">{{ profile.native_state }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Bio :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="bio"><span id="bio">{{ profile.bio }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<th class="is-size-5 is-block has-background-primary has-text-light has-margin-top-10 has-padding-10">Family Details</th>
 
-							<tr >
-								<th class="has-text-right">Father's Name :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="father_name"><span id="father_name">{{ profile.father_name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr> 
-							<tr >
-								<th class="has-text-right">Father's Profession :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="father_prof"><span id="father_prof">{{ profile.father_prof }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Mother's Name :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="mother_name"><span id="mother_name">{{ profile.mother_name }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr> 
-							<tr >
-								<th class="has-text-right">Mother's Profession :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="mother_prof"><span id="mother_prof">{{ profile.mother_prof }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Sibling Brother(s) :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_bro"><span id="sibling_bro">{{ profile.sibling_bro }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Married sibling brother(s) :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_bro_married"><span id="sibling_bro_married">{{ profile.sibling_bro_married }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Sibling Sister(s) :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_sis"><span id="sibling_sis">{{ profile.sibling_sis }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-							<tr >
-								<th class="has-text-right">Married sibling sister(s) :</th>
-								<td class="has-text-left"> &nbsp; <span class="edit"  data-tag="sibling_sis_married"><span id="sibling_sis_married">{{ profile.sibling_sis_married }}</span><i class="fa fa-pencil is-pulled-right"></i></span></td>
-							</tr>
-						</table>
+					<!-- ACOUNT DETAILS-->
+					<div class="container is-desktop has-background-white " >
+						<div class="is-block has-padding-10"  style="background-image: linear-gradient(to bottom right, #002248,#347dcf);">
+							<p class="has-text-white is-size-3">Account Details</p>
+						</div>
+						<div class="has-padding-20">
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Matrimonial ID</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class=" tag is-dark">{{ profile.user.m_id }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Email</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="email">{{ profile.user.email }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Username</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="email">{{ profile.user.username }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Name</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class=" edit"  data-tag="name"><span id="name">{{ profile.user.name }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Age</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="age">{{ profile.user.age }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Date Of Birth</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class=" edit"  data-tag="dob"><span id="dob">{{ profile.user.dob }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Gender</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="gender">{{ profile.user.gender }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Phone</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="phone">{{ profile.user.phone }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a href="{% url 'change_password' %}"><button class="button is-outlined is-primary">Change Your Password</button></a>
+						</div>
+					</div>
+					<!-- PERSONAL DETAILS-->
+					<div class="container is-desktop has-background-white has-margin-top-20 " >
+						<div class="is-block has-padding-10"  style="background-image: linear-gradient(to bottom right, #002248,#347dcf);">
+							<p class="has-text-white is-size-3">Personal Details</p>
+						</div>
+						<div class="has-padding-20">
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Education</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="education"><span id="education">{{ profile.education }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Occupation</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="occupation"><span id="occupation">{{ profile.occupation }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Salary</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class=" edit"  data-tag="salary"><span id="salary">{{ profile.salary }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Marital Status</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class=" edit"  data-tag="marital_status"><span id="marital_status">{{ profile.marital_status }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Religion</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="religion"><span id="religion">{{ profile.religion }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Caste</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span id="caste">{{ profile.caste }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Sub-caste</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="subcaste"><span id="subcaste">{{ profile.subcaste }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Rasi</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="rasi"><span id="rasi">{{ profile.rasi }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Nakshatra</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="nakshatra"><span id="nakshatra">{{ profile.nakshatra }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Height</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="height"><span id="height">{{ profile.height }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Weight</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="weight"><span id="weight">{{ profile.weight }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Complexion</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="complexion"><span id="complexion">{{ profile.complexion }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Physical Disability</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="physical_disability"><span id="physical_disability">{{ profile.physical_disability }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Current City</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="city"><span id="city">{{ profile.city }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Current State</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="state"><span id="state">{{ profile.state }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Native City</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="native_city"><span id="native_city">{{ profile.native_city }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Native State</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="native_state"><span id="native_state">{{ profile.native_state }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Bio</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="bio"><span id="bio">{{ profile.bio }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- FAMILY DETAILS-->
+					<div class="container is-desktop has-background-white has-margin-top-20 " >
+						<div class="is-block has-padding-10"  style="background-image: linear-gradient(to bottom right, #002248,#347dcf);">
+							<p class="has-text-white is-size-3">Family Details</p>
+						</div>
+						<div class="has-padding-20">
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Father's Name</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="father_name"><span id="father_name">{{ profile.father_name }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Father's Profession</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="father_prof"><span id="father_prof">{{ profile.father_prof }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Mother's Name</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="mother_name"><span id="mother_name">{{ profile.mother_name }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Mother's Profession</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="mother_prof"><span id="mother_prof">{{ profile.mother_prof }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Brother(s)</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="sibling_bro"><span id="sibling_bro">{{ profile.sibling_bro }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Married Brother(s)</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="sibling_bro_married"><span id="sibling_bro_married">{{ profile.sibling_bro_married }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Sister(s)</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="sibling_sis"><span id="sibling_sis">{{ profile.sibling_sis }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="field is-horizontal">
+								<div class="field-label is-medium">
+									<label class="label">Married sister(s)</label>
+								</div>
+								<div class="field-body">
+									<div class="field">
+										<div class="control">
+											<span class="edit"  data-tag="sibling_sis_married"><span id="sibling_sis_married">{{ profile.sibling_sis_married }}</span><i class="fa fa-pencil has-margin-left-20"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
